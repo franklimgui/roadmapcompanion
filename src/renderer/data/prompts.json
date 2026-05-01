@@ -1,0 +1,956 @@
+{
+  "categorias": [
+    { "id": "setup", "nome": "Setup & Estrutura", "icone": "▣", "descricao": "Pra começar projeto novo do jeito certo" },
+    { "id": "pagamentos", "nome": "Pagamentos & Gateways", "icone": "$", "descricao": "Mercado Pago, AbacatePay, Asaas, Pagar.me, checkout próprio" },
+    { "id": "webhooks", "nome": "Webhooks", "icone": "↺", "descricao": "Receber e validar eventos sem perder venda" },
+    { "id": "frontend", "nome": "Frontend & LP", "icone": "◇", "descricao": "Páginas que convertem, sem precisar de designer" },
+    { "id": "operacao", "nome": "Operação & Recuperação", "icone": "⚙", "descricao": "Recuperação de venda, automação, retenção" },
+    { "id": "deploy", "nome": "Deploy & Manutenção", "icone": "▲", "descricao": "Subir pro ar, monitorar, manter rodando" },
+    { "id": "membros", "nome": "Área de Membros", "icone": "♦", "descricao": "Login, sessão, perfil, permissões, recuperação de senha" },
+    { "id": "conteudo", "nome": "Conteúdo & Mídia", "icone": "▶", "descricao": "Player de vídeo, progresso, certificado, quiz" },
+    { "id": "ia", "nome": "Integração com IA", "icone": "✦", "descricao": "Claude, Gemini, RAG, embeddings, transcrição, geração" },
+    { "id": "seo", "nome": "SEO & Marketing", "icone": "↑", "descricao": "Meta tags, OG image, sitemap, schema, pixel, UTM" },
+    { "id": "comunidade", "nome": "Comunidade & Social", "icone": "❀", "descricao": "Comentários, feedback, fórum, notificações in-app" }
+  ],
+  "prompts": [
+    {
+      "id": "setup-projeto-novo",
+      "categoria": "setup",
+      "titulo": "Setup de projeto novo (Next.js + Tailwind + TS)",
+      "descricao": "Inicializa projeto do zero com a stack que uso pra LP e área de membros.",
+      "etapasRelacionadas": ["instalando-programas", "iniciando-projeto"],
+      "conteudo": "Quero criar um projeto Next.js novo do zero com Tailwind CSS v3 e TypeScript.\n\nContexto: vou usar pra hospedar uma landing page de oferta digital (ticket R$[TICKET]) e talvez área de membros depois. Foco em:\n- Carregamento rápido (Core Web Vitals bom)\n- Estrutura de pastas escalável\n- Identidade visual customizada (cor principal: [COR_HEX])\n\nMe dá:\n1. Comando exato pra criar o projeto\n2. Arquivos de config que devem ser ajustados (tailwind.config, next.config, tsconfig)\n3. Estrutura de pastas recomendada (components, lib, app router)\n4. Primeiro componente Hero placeholder\n5. Comando pra subir na Vercel\n\nNão me dá explicação acadêmica, só os comandos e arquivos prontos pra copiar/colar.",
+      "variaveis": [
+        { "nome": "TICKET", "exemplo": "173", "descricao": "Valor do produto frontend" },
+        { "nome": "COR_HEX", "exemplo": "#ccff00", "descricao": "Cor principal da marca" }
+      ]
+    },
+    {
+      "id": "estrutura-pastas",
+      "categoria": "setup",
+      "titulo": "Estrutura de pastas pra projeto que vai escalar",
+      "descricao": "Define a arquitetura inicial pra você não ter que refatorar tudo daqui 3 meses.",
+      "etapasRelacionadas": ["iniciando-projeto"],
+      "conteudo": "Quero a estrutura de pastas ideal pra um projeto Next.js que vai ter:\n- Landing page de oferta (com variantes A/B)\n- Checkout próprio (PIX + cartão)\n- Webhook receiver (Kiwify + Mercado Pago)\n- Área de membros simples (login com email + senha)\n- Painel admin pra ver vendas\n\nMe explica:\n1. Estrutura de pastas completa (src/app, src/components, src/lib, etc)\n2. Onde colocar tipos compartilhados\n3. Onde colocar funções de API\n4. Padrão de nomenclatura (camelCase vs kebab-case nas pastas)\n5. O que NÃO criar agora (premature abstraction)\n\nMe dá um árvore visual da pasta e um README curto explicando a lógica de cada pasta.",
+      "variaveis": []
+    },
+    {
+      "id": "setup-supabase",
+      "categoria": "setup",
+      "titulo": "Setup Supabase (Postgres + Auth + RLS)",
+      "descricao": "Conecta Supabase no Next.js com tipagem, helper de cliente e RLS configurada.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero conectar Supabase ao meu Next.js (App Router) com:\n1. Cliente server-side e client-side separados\n2. Tipos TypeScript gerados via supabase CLI\n3. RLS habilitada por padrão em todas as tabelas\n4. Schema inicial: usuarios, sessoes, produtos\n\nMe dá:\n- Comandos npm pra instalar deps\n- lib/supabase/server.ts e lib/supabase/client.ts\n- Comando pra gerar tipos\n- Schema SQL inicial com RLS exemplo\n- Como configurar env vars (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE)\n- Exemplo de query server-side numa rota /api",
+      "variaveis": []
+    },
+    {
+      "id": "setup-pixel-meta",
+      "categoria": "setup",
+      "titulo": "Setup pixel Meta + Google Tag Manager",
+      "descricao": "Pixel completo no Next.js com eventos PageView, ViewContent, AddToCart, InitiateCheckout, Purchase.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero instalar pixel Meta e GTM no meu Next.js (App Router) com TypeScript.\n\nObjetivo: rastrear funil completo (LP → Checkout → Purchase) com eventos certos.\n\nMe dá:\n1. Componente <PixelLoader /> pra incluir no layout root\n2. Helpers fbq() e gtag() type-safe pra disparar eventos\n3. Hook usePixelEvent() pra disparar dentro de páginas\n4. Lista dos eventos padrão Meta (PageView, ViewContent, AddToCart, InitiateCheckout, Purchase) com formato exato de cada\n5. Como integrar com pixel server-side (Conversions API) usando Next.js API route\n6. Validação que o evento tá sendo disparado (DevTools Network)\n\nID do pixel: [PIXEL_ID]. ID GTM: [GTM_ID].",
+      "variaveis": [
+        { "nome": "PIXEL_ID", "exemplo": "1234567890", "descricao": "ID do pixel Meta" },
+        { "nome": "GTM_ID", "exemplo": "GTM-XXXXXX", "descricao": "ID do container GTM" }
+      ]
+    },
+    {
+      "id": "setup-typescript-strict",
+      "categoria": "setup",
+      "titulo": "TypeScript strict mode (zero any escondido)",
+      "descricao": "Configura tsconfig pra strict total e ESLint pra impedir `any` implícito.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero configurar TypeScript strict mode no meu Next.js de forma que NUNCA passe `any` implícito ou tipos frouxos.\n\nMe dá:\n1. tsconfig.json com strict: true e flags relacionadas (noImplicitAny, strictNullChecks, noUncheckedIndexedAccess, etc)\n2. eslint.config.js com regras @typescript-eslint que falham build se tiver `any`\n3. .eslintrc com regras pra forçar tipos explícitos em retorno de função pública\n4. Script npm `npm run typecheck` que roda tsc --noEmit\n5. Como conectar isso no Vercel pra falhar deploy se tipo quebrar\n\nQuero código pronto, sem explicação genérica.",
+      "variaveis": []
+    },
+    {
+      "id": "setup-vitest",
+      "categoria": "setup",
+      "titulo": "Setup Vitest pra testes (Next.js + React)",
+      "descricao": "Vitest configurado com React Testing Library, sem dor de Jest.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero configurar Vitest pro meu Next.js (App Router) com TypeScript pra testar:\n- Funções utilitárias (lib/)\n- Componentes React (com React Testing Library)\n- Rotas API (mockando fetch)\n\nMe dá:\n1. Deps a instalar (vitest, @testing-library/react, etc)\n2. vitest.config.ts com setup\n3. test-setup.ts com mocks comuns (next/router, next/navigation)\n4. 3 exemplos de teste prontos: 1 unit, 1 component, 1 API route\n5. Script npm test e como integrar no CI\n\nNão usar Jest. Vitest é mais rápido e tem melhor TypeScript.",
+      "variaveis": []
+    },
+    {
+      "id": "setup-sentry",
+      "categoria": "setup",
+      "titulo": "Sentry pra erros em produção",
+      "descricao": "Captura erros de frontend e backend com source maps + alertas.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero instalar Sentry no meu Next.js pra capturar erros em produção.\n\nMe dá:\n1. Comandos pra instalar @sentry/nextjs\n2. Wizard de setup automatizado (npx @sentry/wizard)\n3. Config de source maps pra ver linha exata do erro original\n4. Como filtrar erros de DEV (não enviar pra Sentry)\n5. Como adicionar contexto do usuário (Sentry.setUser) após login\n6. Como configurar alertas no dashboard Sentry pra receber email/Slack quando der spike de erro\n7. ENV vars necessárias (SENTRY_DSN, SENTRY_AUTH_TOKEN)\n\nDSN: [SENTRY_DSN].",
+      "variaveis": [
+        { "nome": "SENTRY_DSN", "exemplo": "https://...@sentry.io/...", "descricao": "DSN do projeto Sentry" }
+      ]
+    },
+    {
+      "id": "setup-prettier-eslint",
+      "categoria": "setup",
+      "titulo": "Prettier + ESLint sem brigar entre si",
+      "descricao": "Config que formata e lint juntos, sem conflito de regras.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero configurar Prettier + ESLint no meu Next.js sem regras conflitantes.\n\nMe dá:\n1. .prettierrc.json com config padrão\n2. eslint.config.js (flat config, ESLint 9+) com eslint-config-prettier pra desativar regras de formato\n3. Plugin pra ordenar imports automaticamente (eslint-plugin-import ou prettier-plugin-organize-imports)\n4. Hook pre-commit com husky + lint-staged que roda em arquivos staged\n5. Script npm format e npm lint:fix\n6. Settings VS Code .vscode/settings.json pra format on save\n\nSem dependências mortas, só essencial.",
+      "variaveis": []
+    },
+    {
+      "id": "api-pix-mercadopago",
+      "categoria": "pagamentos",
+      "titulo": "API PIX com Mercado Pago (gerar QR + polling)",
+      "descricao": "Endpoint que gera cobrança PIX e devolve QR Code copia-e-cola.",
+      "etapasRelacionadas": ["api-pix"],
+      "conteudo": "Preciso criar uma API PIX com Mercado Pago no meu Next.js (App Router).\n\nFluxo:\n1. POST /api/pagamento/criar, recebe { nome, email, valor } e gera cobrança PIX. Devolve { id_pagamento, qr_code_base64, qr_code_copia_cola, expira_em }\n2. GET /api/pagamento/status/[id], polling do frontend pra saber se já foi pago. Devolve { status: 'pendente' | 'pago' | 'expirado' }\n3. POST /api/pagamento/webhook, recebe notificação do Mercado Pago quando muda status. Atualiza banco.\n\nContexto:\n- Token do MP em env var (MP_ACCESS_TOKEN)\n- Banco: Supabase Postgres\n- Tabela: pagamentos (id, mp_id, email, nome, valor, status, criado_em, pago_em)\n\nMe dá:\n1. Schema SQL da tabela\n2. Código completo dos 3 endpoints\n3. Função utilitária pra chamar API do MP (lib/mercadopago.ts)\n4. Validação de assinatura do webhook\n5. Tratamento de erro com retry exponencial\n\nCódigo pronto pra colar.",
+      "variaveis": []
+    },
+    {
+      "id": "api-pix-abacatepay",
+      "categoria": "pagamentos",
+      "titulo": "API PIX com AbacatePay (mais barato pra ticket baixo)",
+      "descricao": "Integração AbacatePay pra cobrar PIX com taxa fixa baixa em low ticket.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero integrar AbacatePay (gateway brasileiro) pra cobrar PIX no meu Next.js.\n\nContexto: ticket R$[TICKET], PIX é o principal método (>70% das vendas). AbacatePay tem taxa fixa baixa, melhor que % do MP pra ticket baixo.\n\nFluxo:\n1. POST /api/pagamento/abacate/criar, gera billing PIX. Devolve QR + copia-e-cola\n2. POST /api/pagamento/abacate/webhook, recebe confirmação\n\nMe dá:\n1. Como criar conta + pegar API key do dashboard AbacatePay\n2. lib/abacatepay.ts com funções tipadas (criarBilling, consultarStatus)\n3. Endpoints completos\n4. Validação de webhook (signature header)\n5. Schema SQL da tabela pagamentos_abacate (separada ou unificada com MP, você escolhe e justifica)\n6. Tratamento de timeout e retry\n\nDocs oficiais: https://docs.abacatepay.com",
+      "variaveis": [
+        { "nome": "TICKET", "exemplo": "47", "descricao": "Valor médio do produto" }
+      ]
+    },
+    {
+      "id": "api-pix-asaas",
+      "categoria": "pagamentos",
+      "titulo": "API PIX com Asaas (pra quem prefere infra estável)",
+      "descricao": "Integração Asaas, mais antigo e estável que MP em alguns cenários.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero integrar Asaas pra cobrar PIX e Boleto no meu Next.js.\n\nDiferencial Asaas: bom suporte a boleto, infra estável, anti-fraude embutido.\n\nMe dá:\n1. Setup de conta + API key (sandbox vs produção)\n2. lib/asaas.ts com funções tipadas (criarCliente, criarCobranca, consultarCobranca)\n3. POST /api/pagamento/asaas/criar (recebe método: 'PIX' | 'BOLETO', valor, dados cliente)\n4. POST /api/pagamento/asaas/webhook (eventos PAYMENT_RECEIVED, PAYMENT_REFUNDED)\n5. Validação de webhook por IP whitelist (Asaas só envia de IPs específicos)\n6. Como handle PIX expirado (Asaas dá 1h padrão)\n\nDocs: https://docs.asaas.com",
+      "variaveis": []
+    },
+    {
+      "id": "api-pix-pagar-me",
+      "categoria": "pagamentos",
+      "titulo": "API PIX e cartão com Pagar.me",
+      "descricao": "Pagar.me v5 (Stone) pra cobrar PIX, boleto e cartão num só gateway.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero integrar Pagar.me v5 (Stone) no meu Next.js pra cobrar PIX, cartão e boleto num só gateway.\n\nMe dá:\n1. Setup de conta Pagar.me + API key v5\n2. lib/pagarme.ts com helper de cliente axios pré-configurado (basic auth + header)\n3. POST /api/checkout/pagarme/pix - cria order com payment PIX\n4. POST /api/checkout/pagarme/cartao - cria order com payment_method credit_card (recebe card_token gerado client-side)\n5. POST /api/checkout/pagarme/boleto\n6. POST /api/checkout/pagarme/webhook - eventos order.paid, order.payment_failed\n7. Anti-fraude habilitado (clearsale ou konduto)\n8. Tokenization client-side pro cartão nunca tocar seu servidor\n\nDocs: https://docs.pagar.me/v5",
+      "variaveis": []
+    },
+    {
+      "id": "api-pix-pushinpay",
+      "categoria": "pagamentos",
+      "titulo": "API PIX com PushinPay (taxa baixíssima)",
+      "descricao": "PushinPay é gateway brasileiro com taxa fixa de R$0,30 pro PIX. Bom pra low ticket.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero integrar PushinPay no meu Next.js. Taxa fixa de R$0,30/transação no PIX, vantajoso pra ticket de R$[TICKET].\n\nMe dá:\n1. Setup de conta + API key\n2. lib/pushinpay.ts com cliente HTTP\n3. POST /api/pagamento/pushin/criar - cria pedido PIX, devolve QR + copia-e-cola\n4. POST /api/pagamento/pushin/webhook - confirma pagamento\n5. Cuidados: PushinPay às vezes manda webhook duplicado, tem que ter idempotência por order_id\n6. Validação de assinatura HMAC\n7. Schema SQL da tabela\n\nMonta pra produção, com tratamento de erro decente.",
+      "variaveis": [
+        { "nome": "TICKET", "exemplo": "27", "descricao": "Valor do produto" }
+      ]
+    },
+    {
+      "id": "checkout-proprio",
+      "categoria": "pagamentos",
+      "titulo": "Checkout próprio (página de pagamento + 1-click)",
+      "descricao": "Página de checkout que substitui o Kiwify. Cobra menos taxa, salva cartão pra 1-click.",
+      "etapasRelacionadas": ["api-pix"],
+      "conteudo": "Quero construir um checkout próprio pra minha oferta de R$[TICKET], substituindo Kiwify pra economizar taxa.\n\nRequisitos:\n- Página /checkout com formulário (nome, email, CPF, telefone)\n- 2 métodos: PIX (gera QR) e cartão (Mercado Pago tokenization)\n- Após aprovado, redireciona pra /obrigado e dispara evento Purchase\n- Order bump: 1 produto adicional pré-marcado\n- 1-click: se email já existe com cartão salvo, opção \"comprar com *1234\"\n- Reembolso 7 dias por padrão\n\nMe dá:\n1. Estrutura de tabelas (compradores, cartoes_salvos, pedidos, order_bumps)\n2. Componente <Checkout /> completo\n3. Componente <OrderBump /> reutilizável\n4. Lógica de 1-click\n5. Endpoints de processamento\n6. Como integrar pixel Meta no momento certo\n\nQuero código completo, sem placeholder.",
+      "variaveis": [
+        { "nome": "TICKET", "exemplo": "173", "descricao": "Valor do frontend" }
+      ]
+    },
+    {
+      "id": "order-bump",
+      "categoria": "pagamentos",
+      "titulo": "Order bump no checkout (componente reutilizável)",
+      "descricao": "Card que aparece no checkout oferecendo produto adicional, com toggle.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero um componente <OrderBump /> reutilizável pro meu checkout próprio.\n\nComportamento:\n- Card visualmente destacado (borda lime, bg sutil)\n- Pré-marcado por padrão (aluno desmarca se quiser)\n- Mostra: nome, valor original riscado, valor com desconto, descrição curta\n- Quando marcado, soma ao total da compra\n- Dispara evento AddToCart no pixel quando marcado\n\nProps: { id, nome, valorOriginal, valorBump, descricao, marcadoPorPadrao, onChange }\n\nMe dá:\n1. Componente em React + Tailwind\n2. Hook useOrderBump pra gerenciar estado e total\n3. Como integrar com checkout principal (passar bump_id no body do POST)\n4. CSS de animação sutil ao marcar/desmarcar\n5. Variação mobile-friendly",
+      "variaveis": []
+    },
+    {
+      "id": "upsell-1click",
+      "categoria": "pagamentos",
+      "titulo": "Upsell 1-click na página de obrigado",
+      "descricao": "Cobra produto adicional sem pedir dados de novo (cartão já salvo).",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero implementar upsell 1-click na minha thank-you page. Cliente acabou de comprar, e na página de obrigado aparece oferta extra que ele pode aceitar com 1 clique (cartão já salvo na compra anterior).\n\nFluxo:\n1. /obrigado/[order_id] carrega dados do pedido\n2. Mostra oferta de upsell (produto premium, R$[VALOR_UPSELL])\n3. Botão \"Aceitar e adicionar à compra\" cobra direto no cartão salvo via Pagar.me/MP charge endpoint\n4. Se aprovado, redireciona pra /obrigado/[order_id]/upsell-aceito\n5. Se recusar, /obrigado/[order_id]/sem-upsell (tem oferta de downsell aqui também)\n\nMe dá:\n1. Tabela cartoes_salvos (id, comprador_id, gateway_token, last4, expira_em)\n2. Endpoint POST /api/upsell/aceitar (recebe order_id e upsell_id)\n3. Componente UpsellPage\n4. Tratamento de cartão expirado / fundos insuficientes\n5. Política de não cobrar upsell em pedido com chargeback histórico",
+      "variaveis": [
+        { "nome": "VALOR_UPSELL", "exemplo": "297", "descricao": "Valor do produto upsell" }
+      ]
+    },
+    {
+      "id": "downsell-thankyou",
+      "categoria": "pagamentos",
+      "titulo": "Downsell na thank-you (após recusar upsell)",
+      "descricao": "Última chance: oferta menor pra quem recusou upsell.",
+      "etapasRelacionadas": [],
+      "conteudo": "Cliente acabou de recusar meu upsell de R$[VALOR_UPSELL]. Quero oferecer downsell de R$[VALOR_DOWNSELL] como última chance.\n\nObjetivo: capturar 30-40% dos que recusaram upsell.\n\nFluxo:\n1. Após recusa do upsell, redireciona pra /obrigado/[order_id]/downsell\n2. Página com copy de \"última oferta antes de você sair\" (sem ser falsa escassez)\n3. Botão de aceitar usa mesmo 1-click do upsell\n4. Após aceitar ou recusar, redireciona pra área de membros\n\nMe dá:\n1. Componente DownsellPage com copy persuasiva mas honesta\n2. Endpoint POST /api/downsell/aceitar\n3. Tracking no pixel (evento custom \"DownsellAccepted\")\n4. Variação A/B simples (testar 2 versões da copy)",
+      "variaveis": [
+        { "nome": "VALOR_UPSELL", "exemplo": "297", "descricao": "Valor que ele recusou" },
+        { "nome": "VALOR_DOWNSELL", "exemplo": "97", "descricao": "Valor da oferta de retorno" }
+      ]
+    },
+    {
+      "id": "split-coproducao",
+      "categoria": "pagamentos",
+      "titulo": "Split de pagamento pra coprodução",
+      "descricao": "Divide a venda automaticamente entre produtor + coprodutor + afiliado.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero implementar split automático no meu checkout. Cada venda divide entre:\n- Produtor (eu): 70%\n- Coprodutor: 20%\n- Afiliado (se houver): 10%\n\nGateway: Pagar.me v5 (suporta split nativo).\n\nMe dá:\n1. Tabela coprodutores (id, nome, recipient_id_pagarme, percentual)\n2. Tabela afiliados (id, nome, recipient_id_pagarme, link_unico)\n3. Lógica que monta o array de split antes de criar a order\n4. Como tracking de qual afiliado trouxe a venda (cookie + UTM)\n5. Painel admin pra ver receita por coprodutor/afiliado\n6. Edge case: split errado se total não somar 100%",
+      "variaveis": []
+    },
+    {
+      "id": "anti-fraude",
+      "categoria": "pagamentos",
+      "titulo": "Anti-fraude no checkout (regras + score)",
+      "descricao": "Score simples de risco pra bloquear pedidos suspeitos antes de cobrar.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero anti-fraude no meu checkout antes de chamar gateway. Bloqueia pedidos com score alto de fraude.\n\nRegras:\n- Mesmo email com 5+ tentativas em 1h = bloqueia\n- IP de país diferente do telefone = +1 ponto risco\n- CPF inválido = bloqueia\n- Cartão com BIN de banco internacional ticket-baixo = +1 ponto\n- 3+ pedidos do mesmo IP em 5min = bloqueia\n- Email descartável (mailinator, etc) = bloqueia\n\nMe dá:\n1. lib/antifraude.ts com função calcularScore(dados): { score: 0-100, motivos: string[] }\n2. Lista de domínios de email descartável\n3. Validação de CPF (algoritmo)\n4. Tabela tentativas_checkout pra rate limit\n5. Como integrar no fluxo de criar pedido (recusa antes de chamar gateway)\n6. Logging dos pedidos bloqueados pra revisar\n\nNão substitui anti-fraude profissional (Clearsale, Konduto), é primeira camada.",
+      "variaveis": []
+    },
+    {
+      "id": "assinatura-recorrente",
+      "categoria": "pagamentos",
+      "titulo": "Assinatura recorrente (mensal/anual)",
+      "descricao": "Cobrança recorrente com retry, downgrade automático e webhook de cancelamento.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero implementar assinatura recorrente mensal de R$[VALOR_MENSAL] ou anual de R$[VALOR_ANUAL] com desconto.\n\nGateway: Pagar.me v5 (subscriptions).\n\nFluxo:\n1. Cliente assina (cartão tokenizado), gateway cobra automaticamente todo mês\n2. Falhou cobrança? Retry automático em 3, 7 e 14 dias\n3. Falhou 3x? Suspende acesso (status='suspenso')\n4. Cliente atualiza cartão? Reativa\n5. Cliente cancela? Mantém acesso até fim do ciclo já pago\n\nMe dá:\n1. Schema (assinaturas, ciclos_cobranca)\n2. Endpoints (POST /api/assinatura/criar, /cancelar, /atualizar-cartao)\n3. Webhook handler pra eventos subscription.* e charge.*\n4. Página /minha-conta/assinatura pro cliente ver/cancelar\n5. Email automático em mudanças críticas (cobrança aprovada, falhou, suspenso)\n6. Cron diário que verifica assinaturas que vão renovar amanhã (lembrete)",
+      "variaveis": [
+        { "nome": "VALOR_MENSAL", "exemplo": "47", "descricao": "Valor da mensalidade" },
+        { "nome": "VALOR_ANUAL", "exemplo": "397", "descricao": "Valor anual com desconto" }
+      ]
+    },
+    {
+      "id": "webhook-kiwify",
+      "categoria": "webhooks",
+      "titulo": "Webhook Kiwify (validação + retry + idempotência)",
+      "descricao": "Receiver de webhook do Kiwify com validação HMAC, idempotência e fila de retry.",
+      "etapasRelacionadas": ["webhooks"],
+      "conteudo": "Preciso criar um endpoint que recebe webhook do Kiwify e atualiza minha base.\n\nEventos relevantes:\n- order_approved, adicionar comprador\n- subscription_canceled, marcar inativo\n- order_refunded, registrar pra análise\n- pix_generated (PIX gerado mas não pago), fila de recuperação\n\nRequisitos críticos:\n1. Validar assinatura HMAC do header (KIWIFY_SECRET no env)\n2. Idempotência (mesmo evento pode chegar 2x), event_id como chave única\n3. Responder 200 RÁPIDO (em <2s) e processar em background\n4. Logar TUDO num jsonb (tabela webhook_logs)\n5. Falha interna enfileira retry, NÃO devolve 500\n\nStack: Next.js (App Router) + Supabase.\n\nMe dá:\n1. Schema das tabelas\n2. POST /api/webhook/kiwify completo\n3. validarAssinaturaKiwify(body, signature)\n4. Lógica de retry/queue\n5. Exemplo de payload de cada evento (curl)",
+      "variaveis": []
+    },
+    {
+      "id": "webhook-hotmart",
+      "categoria": "webhooks",
+      "titulo": "Webhook Hotmart (HOTOK + listener)",
+      "descricao": "Hotmart manda webhook estilo HOTOK 2.0, com header HOTTOK pra validar.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero receber webhooks da Hotmart (HOTOK 2.0) no meu Next.js.\n\nEventos importantes:\n- PURCHASE_APPROVED\n- PURCHASE_COMPLETE\n- PURCHASE_CANCELED\n- PURCHASE_REFUNDED\n- PURCHASE_CHARGEBACK\n- SUBSCRIPTION_CANCELLATION\n\nMe dá:\n1. Endpoint POST /api/webhook/hotmart\n2. Validação do header HOTTOK contra HOTMART_HOTTOK env var\n3. Schema da tabela alunos_hotmart (id, transacao_id, email, status, criado_em)\n4. Lógica de idempotência (transacao_id como unique)\n5. Tratamento de PURCHASE_CHARGEBACK + PURCHASE_REFUNDED (revoga acesso)\n6. Trigger pra disparar email de boas-vindas em PURCHASE_APPROVED\n7. Como configurar no painel Hotmart (URL + token)",
+      "variaveis": []
+    },
+    {
+      "id": "webhook-validacao",
+      "categoria": "webhooks",
+      "titulo": "Validação genérica de webhook (HMAC + timestamp)",
+      "descricao": "Função reutilizável pra validar webhook de qualquer plataforma.",
+      "etapasRelacionadas": ["webhooks"],
+      "conteudo": "Quero uma função utilitária TypeScript reutilizável que valida webhooks de várias plataformas.\n\nRequisitos:\n1. HMAC-SHA256 (Kiwify, Stripe)\n2. HMAC-SHA1 (algumas antigas)\n3. Validar timestamp (recusa requests >5 min de idade, previne replay attack)\n4. Type-safe: { algorithm, secret, signatureHeader, timestampHeader? }\n5. Retornar { valid: boolean, motivo?: string }\n\nMe dá:\n1. lib/webhook-validator.ts completo\n2. Exemplos pra Kiwify, Stripe, Mercado Pago\n3. Testes unitários básicos com Vitest (4 casos)\n\nCódigo de produção.",
+      "variaveis": []
+    },
+    {
+      "id": "webhook-fila-retry",
+      "categoria": "webhooks",
+      "titulo": "Fila com retry exponencial (sem Redis)",
+      "descricao": "Tabela Postgres como fila simples, com worker que faz retry com backoff.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero uma fila simples baseada em Postgres pra processar webhooks que falharam.\n\nObjetivo: receber webhook responde 200, processa async. Se falhar, retry exponencial até 5 tentativas.\n\nMe dá:\n1. Schema da tabela webhook_queue (id, payload, tentativas, proxima_tentativa_em, status, criado_em)\n2. Função enfileirar(payload) chamada pelo endpoint webhook\n3. Worker em /api/cron/processar-fila (Vercel Cron a cada 5 min)\n4. Lógica de backoff: 1min, 5min, 30min, 2h, 12h\n5. Status final: 'sucesso', 'falhou_definitivamente'\n6. Painel admin pra ver fila e retry manual",
+      "variaveis": []
+    },
+    {
+      "id": "lp-conversao",
+      "categoria": "frontend",
+      "titulo": "Landing page de alta conversão (estrutura completa)",
+      "descricao": "Estrutura validada de LP de oferta digital.",
+      "etapasRelacionadas": ["masterizacao-frontend"],
+      "conteudo": "Quero criar uma landing page de alta conversão pro meu produto:\n\n- Nome: [NOME_PRODUTO]\n- Promessa: [PROMESSA]\n- Persona: [PERSONA]\n- Ticket: R$[TICKET]\n- Mecanismo único: [MECANISMO]\n- Garantia: 7 dias\n\nEstrutura (em ordem):\n1. Hero, headline + subheadline + CTA + VSL placeholder\n2. Prova social, 3-4 logos/menções\n3. Quem é (você), bio curta com prova\n4. Pra quem É e pra quem NÃO É, duas listas\n5. Mecanismo único, bento grid 4-6 cards\n6. O que tá incluso, bullets\n7. Oferta, preço com âncora, garantia, CTA grande\n8. FAQ, accordion 6-8 perguntas\n9. Footer\n\nStack: Next.js App Router + Tailwind v3.\n\nIdentidade: cor [COR], fundo dark, fonte Space Grotesk.\n\nMe dá:\n1. /page.tsx completa\n2. Cada componente separado\n3. Animações sutis (fade-up no scroll)\n4. Responsivo de verdade\n\nUsa textos placeholder que façam sentido pro produto.",
+      "variaveis": [
+        { "nome": "NOME_PRODUTO", "exemplo": "Roadmap Dev de Oferta", "descricao": "Nome do produto" },
+        { "nome": "PROMESSA", "exemplo": "Pare de pagar Lovable", "descricao": "Frase de transformação" },
+        { "nome": "PERSONA", "exemplo": "infoprodutor não-técnico", "descricao": "Cliente ideal" },
+        { "nome": "TICKET", "exemplo": "173", "descricao": "Preço do produto" },
+        { "nome": "MECANISMO", "exemplo": "Claude Code aplicado a oferta", "descricao": "Diferencial único" },
+        { "nome": "COR", "exemplo": "#ccff00", "descricao": "Cor principal" }
+      ]
+    },
+    {
+      "id": "componentes-bonitos",
+      "categoria": "frontend",
+      "titulo": "Componente Bento Grid (estilo Apple/Linear)",
+      "descricao": "Grid moderno tipo Apple/Linear pra explicar mecanismo único.",
+      "etapasRelacionadas": ["masterizacao-frontend"],
+      "conteudo": "Quero um componente Bento Grid em React + Tailwind que renderiza 4-6 cards de tamanhos diferentes.\n\nRequisitos:\n- Layout responsivo: 1 col mobile, 2-3 col desktop\n- Cards de tamanhos variados (2x1, 1x1, 2x2 destaque)\n- Cada card: { titulo, descricao, icone (lucide-react), tamanho, accent? }\n- Card com `accent` tem borda/glow na cor primária\n- Hover sutil (lift + glow aumenta)\n- Background glass\n\nIdentidade: cor [COR], fundo dark.\n\nMe dá:\n1. <BentoGrid items={...} /> e <BentoCard />\n2. 6 itens de exemplo preenchidos\n3. CSS/Tailwind classes prontas\n4. Sem dep externa além de lucide-react",
+      "variaveis": [
+        { "nome": "COR", "exemplo": "#ccff00", "descricao": "Cor primária" }
+      ]
+    },
+    {
+      "id": "lp-acabamento",
+      "categoria": "frontend",
+      "titulo": "Acabamento de LP (aumenta conversão)",
+      "descricao": "Pega LP pronta e leva pra excelente. Foco em conversão, não estética.",
+      "etapasRelacionadas": ["bonus-prompt-lp"],
+      "conteudo": "Tenho uma LP funcional mas que não tá convertendo. Vou colar o código abaixo. Quero versão melhorada focada em CONVERSÃO.\n\nMudanças que quero que considere:\n1. Headline, mais específica (números, prazos, vilão nomeado)\n2. CTA, em pelo menos 4 momentos com microcopy variada\n3. Prova social, logo após headline E após preço\n4. Objeções, 3 mais comuns dessa persona endereçadas\n5. Hierarquia visual, só headline e CTA com peso máximo\n6. Mobile, abrir mentalmente no iPhone SE\n7. Above the fold, em <1s entender pra quem é, o que oferece, onde clicar\n\nContexto:\n- Produto: [PRODUTO]\n- Persona: [PERSONA]\n- Ticket: R$[TICKET]\n- Promessa: [PROMESSA]\n\n[COLE O CÓDIGO DA LP AQUI]\n\nDevolve:\n1. Lista de 5-8 mudanças críticas em ordem de impacto\n2. Código completo da nova versão\n3. Pra cada mudança, 1 frase de \"por que\"",
+      "variaveis": [
+        { "nome": "PRODUTO", "exemplo": "Roadmap Dev de Oferta", "descricao": "" },
+        { "nome": "PERSONA", "exemplo": "infoprodutor não-técnico", "descricao": "" },
+        { "nome": "TICKET", "exemplo": "173", "descricao": "" },
+        { "nome": "PROMESSA", "exemplo": "...", "descricao": "" }
+      ]
+    },
+    {
+      "id": "exit-intent",
+      "categoria": "frontend",
+      "titulo": "Pop-up de exit intent (sem ser irritante)",
+      "descricao": "Captura email de quem ia sair, sem usar gatilho falso.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero pop-up de exit intent que aparece quando usuário move o mouse pra fora do viewport (saída prevista).\n\nRegras:\n- Aparece 1x por sessão (cookie)\n- Não aparece pra quem já clicou no CTA principal\n- Mobile: aparece quando scroll for muito rápido pra cima ou após 60s sem interação\n- Não bloqueia a tela inteira (modal central com X visível)\n- Animação suave de entrada\n\nObjetivo: capturar email + WhatsApp pra remarketing posterior.\n\nMe dá:\n1. Componente <ExitIntentModal /> em React\n2. Hook useExitIntent() que detecta intenção\n3. POST /api/leads/exit-intent salva no Supabase\n4. Cookie pra não aparecer de novo\n5. Variação A/B simples (testar copy)\n6. CSS de animação sutil",
+      "variaveis": []
+    },
+    {
+      "id": "vsl-player-customizado",
+      "categoria": "conteudo",
+      "titulo": "Player de vídeo customizado (tipo VTurb)",
+      "descricao": "Player com botão play grande, barra após X seg, eventos pro pixel.",
+      "etapasRelacionadas": ["bonus-player-proprio"],
+      "conteudo": "Quero criar um player customizado pra VSL, tipo VTurb mas sem mensalidade.\n\nRequisitos:\n1. Vídeo HTML5 nativo (mp4 em Bunny CDN ou S3)\n2. Botão play GRANDE centralizado\n3. Barra de progresso só após [SEGUNDOS_LOCK] segundos\n4. Eventos no pixel:\n   - VideoPlay (primeiro play)\n   - VideoQuartile25, 50, 75\n   - VideoComplete\n5. Sem clique direito\n6. Mobile: autoplay muted + tap pra som\n7. Loading skeleton\n8. CTA aparece após [SEGUNDOS_CTA] segundos\n\nStack: React + TS + Tailwind. Sem Vimeo Player API.\n\nMe dá:\n1. <VSLPlayer videoUrl segundosLock segundosCTA onCTAClick />\n2. CSS embutido\n3. Tracking pixel (fbq, gtag)\n4. Documentação curta",
+      "variaveis": [
+        { "nome": "SEGUNDOS_LOCK", "exemplo": "45", "descricao": "Tempo até barra aparecer" },
+        { "nome": "SEGUNDOS_CTA", "exemplo": "120", "descricao": "Tempo até CTA aparecer" }
+      ]
+    },
+    {
+      "id": "cronometro-escassez",
+      "categoria": "frontend",
+      "titulo": "Cronômetro de escassez (real, não fake)",
+      "descricao": "Contador regressivo amarrado a uma data real (não reseta toda visita).",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero um contador regressivo na minha LP pra escassez REAL (data fixa de fim da promoção, não fake reset).\n\nRequisitos:\n- Data fim configurável via env var ou prop\n- Conta dias, horas, minutos, segundos\n- Quando chega em 0, esconde ou mostra mensagem \"oferta encerrada\"\n- Estilo dark com números grandes\n- Mobile-friendly\n- Sem reset de cookie. Se data passou, passou.\n\nMe dá:\n1. <Cronometro dataFim={Date} /> componente React\n2. Hook useTempoRestante() com SSR-safe (não renderiza zero no server)\n3. Tipografia tabular pra números não pularem\n4. Animação sutil de tick a cada segundo\n5. Variante \"ofertaEncerrada\" com CTA pra waitlist\n\nNão fazer fake countdown reseta no F5.",
+      "variaveis": []
+    },
+    {
+      "id": "faq-interativo",
+      "categoria": "frontend",
+      "titulo": "FAQ interativo com busca",
+      "descricao": "Accordion de FAQ com busca por palavra-chave e tracking de quais perguntas mais clicam.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero um FAQ na LP com:\n- Accordion (clicar abre, clicar de novo fecha)\n- Busca em cima que filtra perguntas\n- Tracking no pixel: evento custom 'FAQ_Open' com nome da pergunta\n- Pré-aberto: 1ª pergunta começa expandida\n- Mobile-friendly\n\nDados em FAQ.json: [{ pergunta, resposta, categoria? }]\n\nMe dá:\n1. <FAQ items={...} /> componente\n2. <FAQItem /> com animação de altura sutil\n3. Hook useBusca pra filtrar\n4. Tracking opcional via prop onOpen\n5. 8 exemplos de pergunta/resposta pro nicho de oferta digital",
+      "variaveis": []
+    },
+    {
+      "id": "depoimentos-galeria",
+      "categoria": "frontend",
+      "titulo": "Galeria de depoimentos (vídeo + texto)",
+      "descricao": "Grid de prints de WhatsApp + cards de vídeo de aluno.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero uma seção de depoimentos na LP que misture:\n- 6-8 prints de WhatsApp/Instagram (imagens)\n- 2-3 vídeos curtos de aluno (player simples, autoplay muted)\n- Carrossel mobile (1 por vez), grid desktop\n\nRequisitos:\n- Lazy load de imagens (Next.js Image)\n- Cada depoimento tem: tipo (texto/vídeo), conteúdo, nome, resultado destacado\n- Click numa imagem abre modal com versão grande\n- Pra vídeo, tap pra unmute\n\nMe dá:\n1. <Depoimentos items={...} /> componente\n2. Modal com swipe entre depoimentos\n3. Tipo TS pro item\n4. 5 itens de exemplo realistas pra nicho infoprodutor\n5. CSS de fade no scroll (Intersection Observer)",
+      "variaveis": []
+    },
+    {
+      "id": "comparativo-planos",
+      "categoria": "frontend",
+      "titulo": "Tabela comparativa de planos (basic vs pro vs enterprise)",
+      "descricao": "Grid de planos com destaque do plano recomendado.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero uma tabela comparativa de planos no estilo Linear/Notion.\n\nDados: 3 planos (Basic, Pro, Enterprise) com features booleans + valores numéricos. Pro é recomendado.\n\nFeatures de exemplo:\n- Acesso ao curso\n- Updates por 1 ano\n- Comunidade\n- Calls semanais\n- Suporte 1:1\n- Acesso vitalício\n- Garantia 30d\n\nRequisitos:\n- 3 colunas no desktop, stack no mobile\n- Plano Pro com borda lime + tag \"Recomendado\"\n- Features em ✓ verde / × cinza\n- CTA em cada coluna\n- Toggle mensal/anual com animação suave\n\nMe dá:\n1. <Planos planos={...} /> componente\n2. Tipo TS\n3. Toggle de billing period\n4. CSS de hover sutil",
+      "variaveis": []
+    },
+    {
+      "id": "calculadora-roi",
+      "categoria": "frontend",
+      "titulo": "Calculadora de ROI/economia da oferta",
+      "descricao": "Input do usuário gera quanto ele vai economizar/ganhar com a oferta.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero uma calculadora interativa na LP que mostra economia/ROI quando o aluno preenche.\n\nExemplo: oferta de Roadmap Dev de Oferta. Inputs:\n- Quanto você gasta hoje em Lovable/Bolt? R$/mês\n- Quanto pagaria pra freela montar app? R$\n- Quanto tempo perde tentando código?\n\nOutput dinâmico: \"Você economizaria R$X/ano + Y horas\". CTA aparece com cálculo.\n\nMe dá:\n1. <CalculadoraROI /> componente\n2. Inputs com slider OU number, atualização em tempo real\n3. Lógica de cálculo configurável via prop\n4. Animação suave do número (count-up)\n5. CTA \"Quero economizar isso\" leva pro checkout\n6. Tracking no pixel: evento ROICalculado com valor",
+      "variaveis": []
+    },
+    {
+      "id": "form-captura",
+      "categoria": "frontend",
+      "titulo": "Form de captura validado (email + WhatsApp)",
+      "descricao": "Lead magnet form com validação real, anti-bot e tracking.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero form de captura de lead com:\n- Email (validação de formato e domínio)\n- WhatsApp BR (máscara e validação 11 dígitos)\n- Honeypot anti-bot (campo invisível)\n- Submit com loading state\n- Sucesso: redireciona pra página de obrigado com tracking\n- Erro: mensagem inline\n\nBackend: POST /api/leads/criar salva em Supabase.\n\nMe dá:\n1. <FormCaptura /> componente\n2. Validação client + server\n3. Endpoint API com rate limit (5 submits/IP em 1min)\n4. Schema da tabela leads (id, email, whatsapp, criado_em, origem, ip, user_agent)\n5. UTM tracker (lê ?utm_source na URL e salva no lead)\n6. Email de confirmação via Resend (opcional, prop)",
+      "variaveis": []
+    },
+    {
+      "id": "pagina-obrigado",
+      "categoria": "frontend",
+      "titulo": "Página de obrigado convertora",
+      "descricao": "Não desperdiça atenção pós-compra, faz aluno consumir, compartilhar e fazer upsell.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero página /obrigado que aparece após compra aprovada, otimizada pra:\n1. Confirmar a compra (tira ansiedade)\n2. Mostrar próximos passos claros (1, 2, 3)\n3. CTA pra área de membros\n4. Botão de compartilhar (\"acabei de comprar\")\n5. Oferta de upsell (1-click)\n6. Rastrear evento Purchase com valor exato\n\nDados via query string: ?order_id=xxx&valor=173\n\nMe dá:\n1. <PaginaObrigado /> com layout limpo\n2. Tracking de Purchase pixel + GA4\n3. Botão de compartilhar nativo (navigator.share)\n4. Componente UpsellCard 1-click\n5. Mobile-first responsive",
+      "variaveis": []
+    },
+    {
+      "id": "quiz-qualificacao",
+      "categoria": "frontend",
+      "titulo": "Quiz de qualificação (segmenta lead antes da venda)",
+      "descricao": "Aluno responde 5-7 perguntas e recebe oferta personalizada.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero quiz interativo pré-venda. Aluno responde 5-7 perguntas, eu segmento, mostro oferta certa pra perfil dele.\n\nPerguntas exemplo:\n1. Você já tem produto digital? (sim/não)\n2. Quantas vendas/mês? (faixas)\n3. Stack técnica que usa? (Lovable/Bolt/Replit/já programa/nada)\n4. Maior dor agora? (textarea curta)\n\nResultado: 3 perfis (iniciante / intermediário / avançado) → oferta diferente.\n\nMe dá:\n1. <Quiz perguntas={...} /> componente com transição suave entre perguntas\n2. Tipo TS pra pergunta (singleChoice, multiChoice, text)\n3. Lógica de scoring que calcula perfil\n4. Tela de resultado com CTA específico do perfil\n5. Salvar respostas no Supabase (tabela quiz_respostas)\n6. Tracking de \"quiz completou\" no pixel",
+      "variaveis": []
+    },
+    {
+      "id": "criativo-meme",
+      "categoria": "frontend",
+      "titulo": "Criativo de tráfego (vídeo meme + copy validada)",
+      "descricao": "Estrutura de criativo de Reels que parece orgânico.",
+      "etapasRelacionadas": ["post-criativo"],
+      "conteudo": "Quero criar criativo de tráfego em vídeo formato Reels (9:16) pro produto: [PRODUTO].\n\nPersona: [PERSONA]\nDor: [DOR]\nVilão: [VILAO]\nMecanismo único: [MECANISMO]\n\n3 variações:\n\n1. POV (chorando na cama): topo \"POV: [situação]\" + rodapé \"Enquanto você [verbo passivo], a galera tá [verbo ativo] com [meu produto]\"\n\n2. Antes/Depois cortisol meter: ANTES (solitário, fechado, cortisol HIGH) + DEPOIS (acompanhado, sunset, cortisol LOW). Antes amarelo+vermelho, depois verde no produto\n\n3. Tweet viral fake organic: linha 1 entre aspas (\"você precisa de X\"), linha 2 sem aspas em verde (\"eu que já fiz Y só com Z\"), vídeo de macaco luxando\n\nPra cada uma:\n- Copy do criativo (cor por palavra)\n- Texto do post Meta\n- Sugestão de stock\n- Música\n\nNão usar palavra que cause problema com Meta Ads.",
+      "variaveis": [
+        { "nome": "PRODUTO", "exemplo": "Roadmap Dev de Oferta", "descricao": "" },
+        { "nome": "PERSONA", "exemplo": "infoprodutor não-técnico", "descricao": "" },
+        { "nome": "DOR", "exemplo": "ideia que morre na cama", "descricao": "" },
+        { "nome": "VILAO", "exemplo": "Lovable + dev caro", "descricao": "" },
+        { "nome": "MECANISMO", "exemplo": "Claude Code aplicado a oferta", "descricao": "" }
+      ]
+    },
+    {
+      "id": "clonar-oferta",
+      "categoria": "frontend",
+      "titulo": "Clonar e modelar oferta (sem copiar errado)",
+      "descricao": "Pegar uma LP que vende e adaptar pro seu nicho.",
+      "etapasRelacionadas": ["bonus-clonar-oferta"],
+      "conteudo": "Quero modelar oferta vencedora pra adaptar ao meu produto sem copiar errado.\n\nOFERTA REFERÊNCIA: [URL_REFERENCIA]\nMINHA OFERTA: [URL_MINHA]\n\nMe ajuda a fazer diff estrutural:\n1. Estrutura de seções dela vs minha (em ordem)\n2. Headlines: que tipo de gancho ela usa? (escassez, autoridade, prova, transformação, vilão)\n3. Tipos de prova social\n4. Estrutura da oferta (preço com âncora, bumps, bônus stacking?)\n5. CTAs, texto e quantidade\n6. Mobile, acima da dobra\n\nDepois plano de adaptação:\n- 5 mudanças de alto impacto pra aplicar HOJE\n- 3 elementos que ela tem mas NÃO encaixam no meu nicho\n- 2 oportunidades onde eu posso ir além dela\n\nFoco em estrutura e copy, não cor/visual.",
+      "variaveis": [
+        { "nome": "URL_REFERENCIA", "exemplo": "https://...", "descricao": "Link da LP modelo" },
+        { "nome": "URL_MINHA", "exemplo": "https://...", "descricao": "Link da minha LP atual" }
+      ]
+    },
+    {
+      "id": "popup-cookie",
+      "categoria": "frontend",
+      "titulo": "Banner de cookies LGPD (sem mole)",
+      "descricao": "Banner conforme LGPD que não atrapalha a página.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero banner de cookies LGPD/GDPR no rodapé com:\n- Aceitar / Rejeitar / Personalizar (3 botões)\n- Cookie próprio armazena consentimento por 6 meses\n- Pixel Meta e GA só dispara após aceite\n- Modal de Personalizar com 4 categorias (essencial, analytics, marketing, terceiros)\n- Texto curto, sem juridiquês\n\nMe dá:\n1. <CookieBanner /> componente\n2. Hook useConsent() pra outros componentes saberem se podem trackear\n3. Lógica de carregamento condicional do pixel/GA\n4. Página /privacidade simples com texto base LGPD\n5. Como integrar com pixel Meta (lazy load só após consent)",
+      "variaveis": []
+    },
+    {
+      "id": "recuperacao-pix-pendente",
+      "categoria": "operacao",
+      "titulo": "Recuperação automática de PIX pendente",
+      "descricao": "Sequência de mensagens pra quem gerou PIX e não pagou.",
+      "etapasRelacionadas": ["500-skills"],
+      "conteudo": "Quero sistema de recuperação automática de PIX pendente.\n\nFluxo:\n1. Cliente gera PIX e abandona\n2. 30 min, primeira mensagem (WhatsApp Z-API + email Resend) lembrando + desconto 10%\n3. 2h, segunda mensagem (\"PIX expira em 1h\")\n4. 24h, terceira mensagem com cupom diferente (recuperação final)\n5. 48h, marca como \"perdido\"\n\nRequisitos:\n- Tabela `recuperacao_queue` (id, comprador_id, etapa, agendado_para, executado_em, status)\n- Worker a cada 5 min (Vercel Cron)\n- Templates de mensagem em arquivo separado\n- Variáveis dinâmicas: {nome}, {valor}, {link_pagamento}\n- Cancela fila se cliente pagar (webhook MP marca etapas como canceladas)\n\nStack: Next.js + Supabase + Z-API + Resend.",
+      "variaveis": []
+    },
+    {
+      "id": "carrinho-abandonado",
+      "categoria": "operacao",
+      "titulo": "Recuperação de carrinho abandonado",
+      "descricao": "Captura quem chegou no checkout e saiu, dispara remarketing.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero recuperação de carrinho abandonado: aluno chegou no checkout, preencheu email, saiu sem pagar.\n\nFluxo:\n1. Captura email no checkout (assim que digita)\n2. Se não pagou em 30 min, dispara email + WhatsApp\n3. Sequência: 30min, 6h, 24h, 48h\n4. Cada mensagem com tom diferente (lembrete amigável, escassez sutil, prova social, oferta)\n5. Para a sequência se converter\n\nMe dá:\n1. Endpoint POST /api/checkout/capturar-email (debounced, salva ao digitar)\n2. Tabela carrinho_abandonado (id, email, valor_potencial, etapa, status, criado_em)\n3. Cron worker que processa fila\n4. 4 templates de mensagem prontos\n5. Tracking no pixel pra atribuir conversão recuperada",
+      "variaveis": []
+    },
+    {
+      "id": "sequencia-boas-vindas",
+      "categoria": "operacao",
+      "titulo": "Sequência de boas-vindas 7 dias",
+      "descricao": "Email + WhatsApp programados pra aluno consumir nos primeiros 7 dias.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero sequência automática de 7 dias após compra aprovada.\n\nDia 0: WhatsApp + email com acesso e dica de começar\nDia 1: Email checklist do que já fez\nDia 3: Check-in WhatsApp pra desbloquear quem travou\nDia 5: Caso de sucesso (aluno X que executou e teve resultado Y)\nDia 7: Pré-reembolso, oferece reembolso explícito (alunos que pediriam mesmo, ganham boa vontade pra recompra)\n\nObjetivo: reduzir reembolso de 30% pra <20%.\n\nMe dá:\n1. Tabela onboarding_queue (id, comprador_id, etapa, agendado_para, executado_em)\n2. Cron diário que processa\n3. 5 templates (1 por dia relevante)\n4. Variáveis dinâmicas\n5. Como pausa a fila se aluno responder pedindo ajuda (status='aguardando_resposta')",
+      "variaveis": []
+    },
+    {
+      "id": "nps-automatico",
+      "categoria": "operacao",
+      "titulo": "NPS automático (depois de X dias de uso)",
+      "descricao": "Coleta nota 0-10 do aluno com 1 clique, segmenta detratores.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero coleta automática de NPS (0-10) do aluno X dias após compra.\n\nFluxo:\n1. Dia 30 após compra, dispara email/WhatsApp com link único\n2. Link abre /nps?token=xxx, mostra 0-10 em botões grandes\n3. Aluno clica, salva nota + abre textarea \"o que faria você dar 10?\"\n4. Detratores (0-6) vão pra fila de contato manual\n5. Promotores (9-10) vão pra fila de pedir depoimento + indicação\n6. Passivos (7-8) vão pra fila de \"o que falta pra ser 10?\"\n\nMe dá:\n1. Tabela nps_respostas (token, comprador_id, nota, comentario, respondido_em)\n2. Endpoint POST /api/nps/responder\n3. Página /nps com UI\n4. Cron que dispara mensagens dia 30\n5. Painel admin pra ver score (NPS = %promotores - %detratores)",
+      "variaveis": []
+    },
+    {
+      "id": "depoimento-pos-compra",
+      "categoria": "operacao",
+      "titulo": "Pedir depoimento automático (após resultado)",
+      "descricao": "Pede depoimento na hora certa: quando aluno teve resultado.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero sistema que detecta quando aluno teve resultado e pede depoimento na hora.\n\nGatilho: aluno marca uma etapa específica como \"completa\" no app (\"primeiro produto vendendo\", \"primeiro SaaS rodando\").\n\nFluxo:\n1. Aluno marca etapa\n2. Sistema dispara WhatsApp: \"Caraca, você acabou de [marco]! Posso te pedir um favor rápido?\"\n3. Se aluno responde, segunda mensagem com 3 perguntas:\n   - Onde você estava antes do curso?\n   - O que mudou?\n   - Recomendaria pra quem?\n4. Coleta texto + foto/vídeo se mandar\n5. Pede autorização pra usar como depoimento\n6. Salva em tabela depoimentos com status='aguardando_aprovacao'\n\nMe dá: schema, endpoint, fluxo de mensagens, painel admin pra moderar.",
+      "variaveis": []
+    },
+    {
+      "id": "whatsapp-ia",
+      "categoria": "operacao",
+      "titulo": "WhatsApp inteligente com Claude (resposta automática primeira)",
+      "descricao": "IA responde primeira mensagem, escala pra humano se complexo.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero WhatsApp atendimento com IA. Aluno manda mensagem, Claude responde se for FAQ óbvio. Se não, escala pra mim.\n\nFluxo:\n1. Z-API webhook recebe mensagem do aluno\n2. Manda pra Claude com contexto (FAQ + perfil do aluno + últimas 5 msgs)\n3. Claude responde uma de 3 coisas:\n   a) Resposta direta pra FAQ\n   b) \"Vou chamar o Guilherme\" (escala humano)\n   c) Pergunta clarificadora\n4. Se Claude responde direto, manda mensagem via Z-API\n5. Se escalou, notifica o admin no WhatsApp pessoal\n\nRequisitos:\n- Histórico de conversa salvo no Supabase\n- Claude com prompt mestre que define o que ELE pode responder\n- FAQ vinculado por categoria\n- Token Z-API + Anthropic API key em env vars\n\nMe dá: schema, endpoint webhook, prompt mestre Claude, lógica de escala.",
+      "variaveis": []
+    },
+    {
+      "id": "email-transactional-resend",
+      "categoria": "operacao",
+      "titulo": "Email transacional bonito (Resend + React Email)",
+      "descricao": "Templates de email em React, enviados via Resend, com preview.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero migrar emails transacionais (boas-vindas, recuperação, etc) pra React Email + Resend.\n\nVantagens: templates como JSX (não HTML cru), preview no localhost, Resend é simples e barato.\n\nMe dá:\n1. Setup React Email (deps, npm scripts)\n2. lib/email/send.ts wrapper que usa Resend SDK\n3. 4 templates prontos:\n   - emails/BoasVindas.tsx\n   - emails/RecuperacaoSenha.tsx\n   - emails/RecuperacaoPix.tsx\n   - emails/PreReembolso.tsx\n4. Dev server `react-email dev` pra preview\n5. Como configurar domínio no Resend (DNS, DKIM, SPF)\n6. Logging de email enviado pra debugar bounce",
+      "variaveis": []
+    },
+    {
+      "id": "dashboard-admin",
+      "categoria": "operacao",
+      "titulo": "Dashboard admin de vendas",
+      "descricao": "Painel privado pra você ver vendas, reembolsos, métricas.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero painel admin privado /admin com:\n- Login restrito (whitelist de emails ou senha master)\n- Cards de métrica: vendas hoje/7d/30d, faturamento, taxa de reembolso, MRR (se assinatura)\n- Tabela de últimas 50 vendas com filtros\n- Gráfico de receita por dia (últimos 30d)\n- Lista de pedidos com refund pendente (botão aprovar/recusar)\n- Filtro por produto se tiver mais de um\n\nStack: Next.js + Supabase + recharts.\n\nMe dá:\n1. Layout /admin com sidebar\n2. Middleware de auth (só email whitelist)\n3. Componentes: <Card />, <Tabela />, <Grafico />\n4. Queries SQL otimizadas pra cada métrica\n5. Atualização em tempo real (Supabase realtime channel)",
+      "variaveis": []
+    },
+    {
+      "id": "reativacao-cancelado",
+      "categoria": "operacao",
+      "titulo": "Reativação de assinante cancelado",
+      "descricao": "Sequência pra trazer de volta quem cancelou nos últimos 90 dias.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero reativar assinantes que cancelaram nos últimos 90 dias.\n\nFluxo:\n1. Cron mensal pega lista de quem cancelou nos últimos 90d e não voltou\n2. Email + WhatsApp com oferta especial (50% off no primeiro mês de retorno)\n3. Se ignora, segunda tentativa em 30d com oferta diferente\n4. Track quem voltou (event 'reativacao_sucesso')\n\nMe dá:\n1. Query SQL que pega elegíveis\n2. Tabela reativacao_queue\n3. Cron mensal\n4. Cupom único por aluno (não vaza)\n5. Landing page /voltar?token=xxx personalizada\n6. Métricas de taxa de reativação",
+      "variaveis": []
+    },
+    {
+      "id": "deploy-vercel",
+      "categoria": "deploy",
+      "titulo": "Deploy Vercel + domínio + env vars",
+      "descricao": "Subir projeto pra produção pela primeira vez.",
+      "etapasRelacionadas": ["hospedagem", "dominios"],
+      "conteudo": "Tenho um projeto Next.js no GitHub que quero subir pra Vercel pela primeira vez.\n\nMe dá passo-a-passo CONCRETO (com cliques exatos):\n1. Como conectar GitHub na Vercel\n2. Como importar projeto e configurar Build Command\n3. Como adicionar env vars (NEXT_PUBLIC_API_URL, MP_ACCESS_TOKEN, KIWIFY_SECRET, SUPABASE_URL, SUPABASE_ANON_KEY)\n4. Como conectar domínio próprio (já comprei na Cloudflare): nameserver vs A record, qual é melhor?\n5. SSL automático ou manual?\n6. Como ver logs em produção\n7. Como fazer rollback pra versão anterior\n\nSou iniciante, explica como se eu nunca tivesse usado Vercel.",
+      "variaveis": []
+    },
+    {
+      "id": "deploy-cloudflare-pages",
+      "categoria": "deploy",
+      "titulo": "Deploy Cloudflare Pages (alternativa Vercel grátis)",
+      "descricao": "Cloudflare Pages tem free tier maior que Vercel pra projetos grandes.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero subir Next.js no Cloudflare Pages (alternativa Vercel pra projetos com mais tráfego no free tier).\n\nMe dá:\n1. Diferença entre Cloudflare Pages e Vercel (build, edge runtime, limites)\n2. Como conectar GitHub no Pages\n3. Build command e output directory pra Next.js (next-on-pages)\n4. Configurar env vars\n5. Conectar domínio (Cloudflare DNS é mais simples se domínio já tá lá)\n6. Limitações: Edge runtime obriga adaptação de algumas rotas\n7. Como migrar de Vercel pra Cloudflare Pages se necessário\n8. Quando NÃO usar Cloudflare Pages (cron jobs avançados, ISR pesado)",
+      "variaveis": []
+    },
+    {
+      "id": "deploy-vps-contabo",
+      "categoria": "deploy",
+      "titulo": "Deploy em VPS própria (Contabo + Caddy + Docker)",
+      "descricao": "Quando precisa controle total ou roda serviços que Vercel não suporta.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero subir uma stack inteira numa VPS Contabo: n8n + Postgres + Caddy reverse proxy + algum serviço Node.\n\nRequisitos:\n- Ubuntu 22.04\n- Docker + docker compose\n- Caddy automatiza SSL via Let's Encrypt\n- Subdomínios: n8n.dominio.com, api.dominio.com\n- Backup automático do Postgres pra S3 ou similar\n\nMe dá:\n1. Lista de comandos iniciais (apt, instalar docker)\n2. docker-compose.yml completo (n8n + postgres + caddy)\n3. Caddyfile com 2 subdomínios e SSL automático\n4. Script de backup (.sh + crontab)\n5. Como abrir portas no firewall (ufw)\n6. Como atualizar app sem downtime (docker compose up -d --force-recreate)\n7. Comandos de troubleshooting (logs, restart)",
+      "variaveis": []
+    },
+    {
+      "id": "github-actions-cicd",
+      "categoria": "deploy",
+      "titulo": "GitHub Actions CI/CD básico",
+      "descricao": "Roda lint, typecheck e testes em cada PR. Bloqueia merge se quebrar.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero CI/CD básico no GitHub Actions pra Next.js + TypeScript.\n\nObjetivo:\n1. Em cada PR, roda: install, lint, typecheck, build, test\n2. Bloqueia merge se algum falhar\n3. Em push pra main, dispara deploy Vercel automático\n\nMe dá:\n1. .github/workflows/ci.yml completo\n2. Cache de node_modules entre runs\n3. Matrix simples (Node 20)\n4. Job de comentar no PR resultado dos testes (passa/falha)\n5. Branch protection rules sugeridas no GitHub\n6. Como adicionar Vercel preview comments automáticos",
+      "variaveis": []
+    },
+    {
+      "id": "monitoring-sentry-uptime",
+      "categoria": "deploy",
+      "titulo": "Monitoring (Sentry + UptimeRobot)",
+      "descricao": "Captura erros + monitora uptime de endpoints críticos.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero monitoring básico do meu Next.js em produção:\n1. Sentry pra erros (frontend e backend)\n2. UptimeRobot pra ping de endpoints críticos a cada 5 min\n3. Alertas no WhatsApp quando endpoint cair ou spike de erro\n\nMe dá:\n1. Setup Sentry completo (já vimos noutro prompt, recap rápido)\n2. Setup UptimeRobot: 4 monitors (LP, /api/webhook/kiwify, /api/checkout, /api/health)\n3. Endpoint /api/health que faz check do banco e retorna 200/500\n4. Webhook UptimeRobot pra Z-API (avisar admin no WhatsApp)\n5. Webhook Sentry pra Z-API quando spike de erro (>10/min)\n6. Painel privado /admin/status com últimos eventos",
+      "variaveis": []
+    },
+    {
+      "id": "logging-estruturado",
+      "categoria": "deploy",
+      "titulo": "Logging estruturado (pino + JSON logs)",
+      "descricao": "Logs em JSON pra Vercel/CloudWatch parsear, com níveis e contexto.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero logging estruturado no Next.js (não console.log soltinho).\n\nRequisitos:\n- Logs em JSON (pra Vercel/Datadog parsear)\n- Níveis: trace, debug, info, warn, error\n- Contexto automático em cada log (request_id, user_id quando logado)\n- Em DEV, formato pretty colorido\n- Em PROD, JSON cru\n\nMe dá:\n1. lib/logger.ts usando pino\n2. Middleware Next.js que adiciona request_id\n3. Hook useLogger() pra usar no client (manda logs do front pro back)\n4. Endpoint /api/logs/client recebe logs do front\n5. Exemplos de uso em rota API e em componente\n6. Como filtrar logs em Vercel dashboard",
+      "variaveis": []
+    },
+    {
+      "id": "backup-supabase",
+      "categoria": "deploy",
+      "titulo": "Backup automático Supabase pra S3",
+      "descricao": "Dump diário do banco pra outro lugar (não só backup interno do Supabase).",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero backup automático do meu Supabase pra outro storage (não confio só no backup interno).\n\nFluxo:\n1. Cron diário (Vercel Cron ou GitHub Action) chama pg_dump\n2. Dump compactado (gzip)\n3. Upload pra S3 ou Cloudflare R2\n4. Mantém últimos 30 dias, deleta mais antigos\n5. Notifica WhatsApp se backup falhar\n\nMe dá:\n1. GitHub Action diário (mais barato que Vercel pra long-running)\n2. Script .sh que faz pg_dump + gzip + upload R2\n3. Política de retenção (lifecycle rule no R2)\n4. Webhook de falha\n5. Comando manual pra restaurar do backup local",
+      "variaveis": []
+    },
+    {
+      "id": "debug-erro-prod",
+      "categoria": "deploy",
+      "titulo": "Debug de erro em produção (sem deploy de teste)",
+      "descricao": "Quando algo quebra em prod e você precisa entender rápido.",
+      "etapasRelacionadas": ["manutencao"],
+      "conteudo": "Meu app em produção (Next.js Vercel) começou a dar erro 500 em uma rota.\n\nLogs Vercel:\n[COLE_O_LOG_AQUI]\n\nMe ajuda a debugar SEM deploy de teste:\n1. O que esse erro provavelmente significa? (3 hipóteses ordenadas por probabilidade)\n2. Comandos pra reproduzir localmente?\n3. Como chego no estado exato (banco, env, request body) sem afetar prod?\n4. Se for env var, como faço diff entre local e produção?\n5. Se for problema do banco (Supabase), que query rodar no SQL Editor pra confirmar?\n\nPlano de investigação em ordem (do mais barato pro mais caro de testar).",
+      "variaveis": []
+    },
+    {
+      "id": "auth-magic-link",
+      "categoria": "membros",
+      "titulo": "Login por magic link (Supabase Auth)",
+      "descricao": "Aluno digita email, recebe link, clica e tá logado. Sem senha.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero login só com magic link no Supabase Auth pra área de membros.\n\nFluxo:\n1. Aluno digita email em /entrar\n2. Recebe link único no email (válido 10 min)\n3. Clica no link, cai logado em /membros\n4. Sessão dura 30 dias\n\nMe dá:\n1. Componente <FormEntrar /> com input + envio\n2. Endpoint POST /api/auth/magic (chama supabase.auth.signInWithOtp)\n3. Página /auth/callback que captura token e redireciona\n4. Middleware que protege /membros/*\n5. Email customizado (template Resend) substituindo o padrão Supabase\n6. Edge case: aluno sem compra ativa, mostra mensagem específica",
+      "variaveis": []
+    },
+    {
+      "id": "auth-google-oauth",
+      "categoria": "membros",
+      "titulo": "Login com Google OAuth (Supabase)",
+      "descricao": "Aluno clica em \"entrar com Google\" e tá logado em 2s.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero login com Google OAuth via Supabase Auth.\n\nMe dá:\n1. Como configurar OAuth no Google Cloud Console (criar projeto, habilitar OAuth, redirect URLs)\n2. Como ativar Google provider no Supabase Auth dashboard\n3. Componente <BotaoGoogle /> que dispara supabase.auth.signInWithOAuth({ provider: 'google' })\n4. Página /auth/callback que captura sessão\n5. Como pegar dados do user (nome, email, avatar) e salvar no Supabase\n6. Redirect URL correta em DEV (localhost) vs PROD\n7. Logout completo (limpa Supabase + cookie de Google)",
+      "variaveis": []
+    },
+    {
+      "id": "auth-email-senha",
+      "categoria": "membros",
+      "titulo": "Login email + senha (com hash bcrypt próprio)",
+      "descricao": "Pra quem quer total controle, sem Supabase Auth.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero login email + senha sem usar Supabase Auth (controle total).\n\nMe dá:\n1. Schema da tabela usuarios (id, email, senha_hash, criado_em, ultimo_login_em)\n2. Endpoint POST /api/auth/registrar (hash bcrypt)\n3. Endpoint POST /api/auth/entrar (compara hash, retorna JWT)\n4. Middleware que valida JWT em rotas protegidas\n5. Cookie httpOnly secure same-site lax pra guardar JWT\n6. Endpoint POST /api/auth/logout (limpa cookie)\n7. Rate limit no endpoint de login (5 tentativas/15min/IP)\n\nLib: bcrypt + jose (JWT).\n\nNão me diz pra usar Supabase Auth, eu QUERO controle.",
+      "variaveis": []
+    },
+    {
+      "id": "recuperacao-senha",
+      "categoria": "membros",
+      "titulo": "Recuperação de senha (com token expirável)",
+      "descricao": "Esqueci minha senha, recebo email, redefino.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero fluxo de \"esqueci minha senha\" pro meu sistema custom (não Supabase Auth).\n\nFluxo:\n1. Aluno digita email em /esqueci-senha\n2. Sistema cria token único (UUID), salva em tabela tokens_reset com expiração 1h\n3. Envia email com link /resetar-senha?token=xxx\n4. Aluno clica, página valida token, mostra form de nova senha\n5. Submit hash bcrypt na nova senha, deleta token usado\n6. Login automático após reset\n\nMe dá:\n1. Schema tokens_reset (token, user_id, expira_em, usado_em)\n2. 2 endpoints + 2 páginas\n3. Email template (Resend)\n4. Rate limit (3 pedidos de reset/hora/email)\n5. Não revelar se email existe (responde sucesso mesmo se email não existir, evita enumeration)",
+      "variaveis": []
+    },
+    {
+      "id": "auth-2fa-totp",
+      "categoria": "membros",
+      "titulo": "2FA com TOTP (Google Authenticator)",
+      "descricao": "Adiciona segunda camada de autenticação opcional.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero adicionar 2FA opcional no login (TOTP, Google Authenticator/Authy).\n\nFluxo:\n1. Aluno em /minha-conta/seguranca clica \"Ativar 2FA\"\n2. Sistema gera secret, mostra QR Code\n3. Aluno escaneia no Authenticator, digita 6 dígitos pra confirmar\n4. 2FA ativada, exige código no próximo login\n5. Aluno pode desativar com código atual\n6. Backup codes (10 códigos one-time pra emergência)\n\nLib: otplib (gera/valida TOTP).\n\nMe dá:\n1. Endpoints completos\n2. Componente <Setup2FA /> com QR (qrcode lib)\n3. Componente <Codigo2FA /> no fluxo de login\n4. Tabela tokens_2fa (user_id, secret_encrypted, backup_codes_used, ativado_em)\n5. Como criptografar o secret no banco (não em plaintext)",
+      "variaveis": []
+    },
+    {
+      "id": "roles-permissions",
+      "categoria": "membros",
+      "titulo": "Roles e permissions (admin, aluno, etc)",
+      "descricao": "Sistema de papéis pra controlar quem pode fazer o quê.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero sistema de roles no Supabase com:\n- Roles: 'aluno', 'admin', 'moderador'\n- Cada user tem 1 role default\n- Rota /admin só admin acessa\n- Funções RPC do Supabase com permissão por role\n\nMe dá:\n1. Schema (coluna role na tabela usuarios)\n2. RLS policies que restringem acesso\n3. Helper TS canAccess(user, recurso) pra usar em componentes\n4. HOC withRole('admin') pra proteger páginas\n5. Middleware Next.js que valida role antes de servir página\n6. Como atribuir role manualmente (admin marca outro como mod)\n7. Auditoria: log de mudanças de role",
+      "variaveis": []
+    },
+    {
+      "id": "logout-todas-maquinas",
+      "categoria": "membros",
+      "titulo": "Logout em todas as máquinas (revoga sessões)",
+      "descricao": "Botão pra deslogar em qualquer dispositivo de uma vez.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero feature \"Sair de todas as máquinas\" no /minha-conta/seguranca.\n\nFluxo:\n1. Aluno clica botão\n2. Sistema invalida TODOS os tokens/sessões dele\n3. Aluno é deslogado da máquina atual\n4. Próxima abertura em outra máquina pede login de novo\n\nMe dá:\n1. Schema com tabela sessoes (id, user_id, token, criado_em, expira_em, revogado_em)\n2. Endpoint POST /api/auth/logout-tudo (UPDATE revogado_em em todas)\n3. Middleware verifica se token foi revogado em cada request\n4. Lista de sessões ativas em /minha-conta/seguranca (cada uma com botão \"sair daqui\")\n5. Geolocalização aproximada por IP de cada sessão (lib/geo.ts)",
+      "variaveis": []
+    },
+    {
+      "id": "perfil-usuario",
+      "categoria": "membros",
+      "titulo": "Página de perfil do usuário (editar dados)",
+      "descricao": "Aluno edita nome, foto, senha, preferências.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero página /minha-conta com:\n- Editar nome, foto (upload pra Supabase Storage)\n- Mudar email (com confirmação no email novo)\n- Mudar senha (com senha atual)\n- Preferências (notificações, idioma)\n- Botão \"Excluir conta\" (LGPD, soft delete + agendamento de hard delete em 30d)\n\nMe dá:\n1. Página com tabs (Perfil, Senha, Preferências, Privacidade)\n2. Endpoints PATCH pra cada\n3. Upload de avatar (com crop circular client-side)\n4. Validação que email novo não tá em uso\n5. Confirmação por email antes de mudar email\n6. Soft delete + cron que apaga depois de 30d",
+      "variaveis": []
+    },
+    {
+      "id": "convites-membros",
+      "categoria": "membros",
+      "titulo": "Convites pra área de membros (admin convida)",
+      "descricao": "Admin convida pessoas que não compraram, pra acesso especial.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero admin poder convidar pessoas pra área de membros (acesso de cortesia, beta testers, etc) sem precisar comprar.\n\nFluxo:\n1. Admin em /admin/convites digita email + escolhe nível\n2. Sistema cria registro tipo='convite', envia email com link único\n3. Convidado clica, escolhe senha, vira aluno completo\n4. Convite expira em 7 dias se não aceito\n\nMe dá:\n1. Schema convites (id, email, role, token, criado_por, criado_em, aceito_em)\n2. Endpoints CRUD\n3. Página admin com lista de convites (pendente/aceito/expirado)\n4. Email template\n5. Variável \"max_convites_por_admin\" pra limitar abuso",
+      "variaveis": []
+    },
+    {
+      "id": "bloqueio-inatividade",
+      "categoria": "membros",
+      "titulo": "Bloqueio por inatividade (auto-logout em 15 min)",
+      "descricao": "Após X min sem interação, força re-login. Bom pra área admin sensível.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero auto-logout no /admin após 15 min sem interação.\n\nMe dá:\n1. Hook useInactivityLogout(minutos, onLogout) que detecta mouse/keyboard\n2. Reset do timer em qualquer evento\n3. Aviso 1 min antes do logout (\"vai sair em 60s, clica pra continuar\")\n4. Logout via window.api.logoutCompleto()\n5. Apenas em rotas /admin/*\n6. Configurável: alguns admins (super) podem ter tempo maior",
+      "variaveis": []
+    },
+    {
+      "id": "player-com-progresso",
+      "categoria": "conteudo",
+      "titulo": "Player com tracking de progresso (% concluído)",
+      "descricao": "Salva onde aluno parou, mostra % de progresso por aula.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero player de vídeo que:\n1. Salva último ponto que aluno parou (a cada 10s)\n2. Retoma de onde parou ao voltar\n3. Marca aula como \"concluída\" se assistiu 90%+\n4. Mostra barra de progresso visual\n5. Atualiza % geral do curso\n\nMe dá:\n1. Schema progresso_aulas (user_id, aula_id, segundos_assistidos, total_segundos, concluida_em)\n2. Endpoint POST /api/progresso/atualizar (debounced no client a cada 10s)\n3. Endpoint GET /api/progresso/[user_id] retorna agregado\n4. Hook useProgressoAula(aula_id) com auto-save\n5. Componente <BarraProgresso percentual={...} />\n6. Cálculo de % do curso (média ponderada das aulas)",
+      "variaveis": []
+    },
+    {
+      "id": "certificado-pdf",
+      "categoria": "conteudo",
+      "titulo": "Certificado PDF gerado dinamicamente",
+      "descricao": "Aluno conclui curso, baixa certificado em PDF com o nome dele.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero certificado em PDF gerado quando aluno termina o curso.\n\nFluxo:\n1. Aluno bate 100% das aulas\n2. Sistema mostra botão \"Baixar certificado\"\n3. Botão chama /api/certificado/[user_id]\n4. Endpoint gera PDF com:\n   - Nome do aluno\n   - Nome do curso\n   - Data de conclusão\n   - Hash único pra validação\n   - Logo + assinatura\n5. PDF servido pra download\n\nLib: @react-pdf/renderer ou pdf-lib.\n\nMe dá:\n1. Componente <Certificado /> em React PDF\n2. Endpoint que renderiza\n3. Tabela certificados_emitidos (user_id, hash, emitido_em)\n4. Página /certificado/validar?hash=xxx que valida a autenticidade\n5. Layout em A4 horizontal, design limpo",
+      "variaveis": []
+    },
+    {
+      "id": "quiz-aulas",
+      "categoria": "conteudo",
+      "titulo": "Quiz no fim de cada aula",
+      "descricao": "Pergunta múltipla escolha valida que aluno entendeu antes de seguir.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero quiz simples no final de cada aula. Aluno responde 3 perguntas múltipla escolha. Acertou 2/3, libera próxima aula.\n\nMe dá:\n1. Schema quiz_perguntas (aula_id, pergunta, opcoes JSON, correta_idx)\n2. Schema quiz_respostas (user_id, pergunta_id, opcao_idx, acertou)\n3. Componente <QuizAula aulaId={...} onConcluido={...} />\n4. Endpoint POST /api/quiz/responder\n5. Lógica de \"aluno pode tentar de novo\" (delay de 1 min)\n6. Painel admin pra criar/editar perguntas",
+      "variaveis": []
+    },
+    {
+      "id": "comentarios-aula",
+      "categoria": "conteudo",
+      "titulo": "Comentários por aula (com moderação)",
+      "descricao": "Aluno comenta na aula, outros alunos respondem, admin modera.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero sistema de comentários em cada aula:\n- Aluno escreve comentário\n- Outros alunos respondem (1 nível de aninhamento)\n- Reactions tipo \"útil\" / \"like\"\n- Admin pode fixar comentário no topo\n- Filtro: \"mais úteis\" / \"recentes\" / \"meus comentários\"\n- Moderação: marca como spam, oculta\n- Notificação por email se alguém responde teu comentário\n\nMe dá:\n1. Schema comentarios (id, aula_id, user_id, parent_id, texto, fixado, oculto, criado_em)\n2. Endpoints CRUD\n3. Componente <ListaComentarios aulaId={...} />\n4. Componente <FormComentario />\n5. Real-time: novos comentários aparecem sem refresh (Supabase realtime)\n6. Notificação automática (email Resend)",
+      "variaveis": []
+    },
+    {
+      "id": "avaliacao-aula",
+      "categoria": "conteudo",
+      "titulo": "Avaliação de aula (estrelas 1-5)",
+      "descricao": "Aluno avalia aula no final, admin vê quais aulas têm score baixo.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero pedir avaliação 1-5 estrelas após cada aula.\n\nFluxo:\n1. Aluno termina aula (90% assistido)\n2. Modal \"Como foi essa aula?\" com 5 estrelas\n3. Se 1-3 estrelas, abre textarea \"o que faltou?\"\n4. Se 4-5, agradece e fecha\n5. Admin vê score médio por aula em /admin/aulas\n\nMe dá:\n1. Schema avaliacoes_aulas (user_id, aula_id, estrelas, feedback, criado_em)\n2. Endpoint POST /api/avaliacao/aula\n3. Componente <ModalAvaliacao /> com 5 estrelas clicáveis\n4. Hook useAvaliacaoNoFim(aula) que detecta conclusão e abre modal\n5. Painel admin com agregado por aula (média, total avaliações)\n6. Filtro pra ver feedbacks de aulas com score <3",
+      "variaveis": []
+    },
+    {
+      "id": "exercicios-praticos",
+      "categoria": "conteudo",
+      "titulo": "Exercícios práticos (aluno cola código, sistema avalia)",
+      "descricao": "Aluno responde exercício, sistema valida com Claude.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero exercícios práticos no fim das aulas. Aluno cola código, sistema avalia se tá correto usando Claude.\n\nFluxo:\n1. Página /aula/[id]/exercicio mostra enunciado + textarea\n2. Aluno cola solução, clica \"Avaliar\"\n3. Backend manda pro Claude com prompt: enunciado + solução do aluno + critérios\n4. Claude devolve { acertou: bool, feedback: string, sugestoes: string[] }\n5. Mostra feedback bonito pro aluno\n6. Se acertou, marca como concluído\n\nMe dá:\n1. Schema exercicios (aula_id, enunciado, criterios, solucao_referencia)\n2. Schema submissoes (user_id, exercicio_id, codigo, acertou, feedback)\n3. Endpoint POST /api/exercicio/avaliar\n4. Prompt mestre Claude pra avaliação consistente\n5. Componente <Exercicio /> com syntax highlighter (Shiki)\n6. Limite: 3 submissões/exercício/dia",
+      "variaveis": []
+    },
+    {
+      "id": "upload-imagem",
+      "categoria": "conteudo",
+      "titulo": "Upload de imagem com preview e crop",
+      "descricao": "Componente reutilizável de upload pra avatar, banner, etc.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero componente <UploadImagem /> reutilizável com:\n- Drag-and-drop OU clique pra escolher\n- Preview imediato\n- Crop circular ou quadrado (configurável)\n- Compressão antes do upload (browser-image-compression)\n- Upload pra Supabase Storage\n- Progresso visual\n- Validação: formato (jpg/png/webp), tamanho (max 5MB)\n\nMe dá:\n1. <UploadImagem onUpload={...} formato='circulo'|'quadrado' /> componente\n2. Lib usada: react-image-crop\n3. Backend: bucket público vs privado, RLS no Supabase Storage\n4. Tratamento de erro\n5. CSS responsivo",
+      "variaveis": []
+    },
+    {
+      "id": "video-streaming-hls",
+      "categoria": "conteudo",
+      "titulo": "Streaming de vídeo HLS (Bunny CDN)",
+      "descricao": "Vídeo adaptive bitrate, qualidade muda conforme conexão do aluno.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero servir vídeos do curso em HLS pra ter:\n- Qualidade adaptativa (1080p, 720p, 480p, 360p)\n- Streaming progressivo (não baixa o vídeo todo)\n- Resistente a copy/download\n\nUso Bunny CDN Stream (mais barato que Mux).\n\nMe dá:\n1. Como subir vídeo no Bunny e gerar HLS\n2. Componente <PlayerHLS src={hlsUrl} /> usando hls.js\n3. Tracking de quartiles igual VSL player\n4. Token de assinatura URL (URL signing) pra impedir hotlink\n5. Endpoint /api/video/[id]/url retorna URL assinada com TTL 2h",
+      "variaveis": []
+    },
+    {
+      "id": "claude-chat-rag",
+      "categoria": "ia",
+      "titulo": "Chat com Claude usando RAG sobre seu conteúdo",
+      "descricao": "Aluno pergunta sobre o curso, Claude responde com base no transcript das aulas.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero chat IA dentro do app onde aluno pergunta sobre o curso e Claude responde com base no transcript das aulas.\n\nArquitetura RAG:\n1. Indexar transcripts das aulas em embeddings (Voyage AI ou Gemini)\n2. Armazenar em Supabase com pgvector\n3. No chat: pergunta → embedding → buscar top 5 chunks relevantes → mandar pro Claude com chunks + pergunta\n\nMe dá:\n1. Schema com pgvector (embeddings)\n2. Script de indexação (chunk + embed cada transcript)\n3. Endpoint POST /api/chat (RAG + Claude streaming)\n4. Componente <Chat /> com streaming response\n5. Custo estimado por pergunta\n6. Como evitar alucinação (system prompt restritivo)",
+      "variaveis": []
+    },
+    {
+      "id": "claude-tool-calling",
+      "categoria": "ia",
+      "titulo": "Function calling com Claude (executa ações reais)",
+      "descricao": "Claude pode chamar funções do seu app (criar pedido, buscar aluno, etc).",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero usar tool calling do Claude pra ele executar ações no meu app durante chat.\n\nExemplos de tools:\n- buscar_aluno(email)\n- listar_pedidos(user_id)\n- criar_cupom(percentual, validade)\n- enviar_email(template, destinatario)\n\nClaude decide quando chamar tool, retorna args, eu executo, mando resultado de volta.\n\nMe dá:\n1. Setup do SDK Anthropic com tool definitions\n2. Schema das tools (name, description, input_schema)\n3. Loop de chat que detecta tool_use, executa, retorna tool_result\n4. Validação de input (impede aluno disparar tools que não pode)\n5. Logging de cada tool execution\n6. Exemplo completo no /api/admin/chat-ia",
+      "variaveis": []
+    },
+    {
+      "id": "transcricao-whisper",
+      "categoria": "ia",
+      "titulo": "Transcrição automática de vídeo (Whisper)",
+      "descricao": "Sobe vídeo, gera transcript pro RAG e legenda automática.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero transcrição automática dos vídeos do curso (pra RAG e legenda).\n\nFluxo:\n1. Subo vídeo no Bunny CDN\n2. Trigger: extrai áudio, manda pro OpenAI Whisper API\n3. Salva transcript em tabela aulas_transcripts\n4. Gera arquivo .vtt de legenda\n5. Player carrega legenda\n\nMe dá:\n1. Endpoint POST /api/transcrever (recebe URL do áudio)\n2. Lib OpenAI SDK\n3. Pós-processamento: corrigir nomes próprios via lista (lib/correcao-transcript.ts)\n4. Geração de .vtt timestamped\n5. Como integrar no fluxo de upload de vídeo",
+      "variaveis": []
+    },
+    {
+      "id": "ocr-gemini",
+      "categoria": "ia",
+      "titulo": "OCR de imagem com Gemini Vision",
+      "descricao": "Aluno cola screenshot, Gemini extrai texto/dados.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero feature: aluno cola screenshot de erro/painel, Gemini Vision extrai texto e contextualiza.\n\nUso comum: aluno mostra erro do gerenciador Meta, IA explica.\n\nMe dá:\n1. Endpoint POST /api/ocr (recebe imagem base64)\n2. Lib @google/generative-ai com gemini-2.5-flash-vision\n3. Prompt mestre que pede: { texto_extraido, contexto_inferido, sugestao_acao }\n4. Componente <OCRPaste /> com paste-from-clipboard\n5. Limite: 3 OCRs/dia/aluno\n6. Custo estimado",
+      "variaveis": []
+    },
+    {
+      "id": "geracao-imagem",
+      "categoria": "ia",
+      "titulo": "Geração de imagem (criativo de tráfego rápido)",
+      "descricao": "Aluno descreve, IA gera 4 variações pra teste de criativo.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero feature de geração de imagem pra criativo de tráfego.\n\nFluxo:\n1. Aluno descreve: \"meme estilo POV, personagem chorando na cama, fundo cyberpunk\"\n2. Sistema gera 4 variações via Gemini Imagen ou similar\n3. Aluno escolhe favorita, baixa\n\nMe dá:\n1. Endpoint POST /api/imagem/gerar\n2. Provider: Gemini Imagen ou Replicate (Flux)\n3. Componente <GeradorImagem /> com loading state\n4. Galeria de imagens geradas (histórico)\n5. Download em alta resolução\n6. Limite: 5 gerações/dia/aluno (custo)\n7. Filtro de safety (não gera imagem proibida)",
+      "variaveis": []
+    },
+    {
+      "id": "embedding-busca-semantica",
+      "categoria": "ia",
+      "titulo": "Busca semântica no curso (embedding)",
+      "descricao": "Aluno busca \"como integrar pix\", retorna aulas relevantes mesmo sem match exato.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero busca semântica no curso. Aluno digita query, sistema retorna aulas relevantes mesmo sem match literal.\n\nArquitetura:\n1. Indexar título + descrição + transcript de cada aula em embeddings\n2. pgvector no Supabase pra storage e busca\n3. Query do aluno: gera embedding, busca top 10 mais próximos\n\nMe dá:\n1. Schema com pgvector\n2. Script de indexação\n3. Endpoint /api/busca?q=como%20integrar%20pix\n4. Componente <BarraBusca /> com debounce\n5. Resultados com snippet do trecho relevante\n6. Custo de embedding (Voyage Lite é barato)",
+      "variaveis": []
+    },
+    {
+      "id": "claude-streaming",
+      "categoria": "ia",
+      "titulo": "Streaming de resposta Claude (UI fluida)",
+      "descricao": "Resposta aparece palavra por palavra como ChatGPT, em vez de esperar 30s.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero streaming de resposta do Claude pro chat (UX igual ChatGPT, palavra por palavra).\n\nMe dá:\n1. Endpoint POST /api/chat/stream com Server-Sent Events\n2. SDK Anthropic com `messages.stream`\n3. Componente <ChatMensagem stream={...} /> que renderiza chunk-by-chunk\n4. Cancelar mid-stream se usuário clicar Stop\n5. Fallback se streaming falhar (mostra resposta completa de uma vez)\n6. Tratamento de erro durante stream",
+      "variaveis": []
+    },
+    {
+      "id": "cache-prompts",
+      "categoria": "ia",
+      "titulo": "Cache de prompts (90% mais barato)",
+      "descricao": "Anthropic prompt caching faz prompts longos 10x mais baratos.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero ativar prompt caching da Anthropic pra reduzir custo de chat e análises.\n\nIdeia: prompt mestre (~3k tokens) é igual em todas as requests. Anthropic permite cachear isso, paga 10% do preço normal pra reusar.\n\nMe dá:\n1. Como adicionar cache_control: { type: \"ephemeral\" } no system prompt e tools\n2. Estimativa de economia (R$ por dia pra meu volume)\n3. Cache TTL: 5 min (versão curta) ou 1h (versão longa)\n4. Como medir cache hit rate via response.usage\n5. Quando NÃO usar cache (prompts dinâmicos, conteúdo curto)",
+      "variaveis": []
+    },
+    {
+      "id": "rate-limit-ia",
+      "categoria": "ia",
+      "titulo": "Rate limit por usuário pra features de IA",
+      "descricao": "Limite de uso/dia/aluno pra evitar abuso e estourar custo.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero rate limit por aluno nas features de IA do app:\n- Chat: 50 mensagens/dia\n- Geração de imagem: 5/dia\n- OCR: 10/dia\n- Análise: 5/dia\n\nMe dá:\n1. Tabela rate_limits (user_id, feature, contagem, janela_inicio)\n2. Middleware checarLimite(user_id, feature)\n3. Endpoint GET /api/rate-limits/[user_id] retorna status atual\n4. UI mostra \"X de 50 restantes hoje\"\n5. Reset automático à meia-noite\n6. Override admin pra usuários premium (limite maior)",
+      "variaveis": []
+    },
+    {
+      "id": "meta-tags-dinamicas",
+      "categoria": "seo",
+      "titulo": "Meta tags dinâmicas (Next.js metadata API)",
+      "descricao": "Cada página tem title/description/OG própria, gerada dinamicamente.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero meta tags dinâmicas em cada página do Next.js (App Router).\n\nObjetivo: melhor compartilhamento social + SEO.\n\nMe dá:\n1. generateMetadata() em cada page.tsx com title, description, openGraph, twitter\n2. Layout root com metadata padrão\n3. Como pegar dados (do banco) pra metadata dinâmica em /produto/[slug]\n4. og:image com tamanho ideal (1200x630)\n5. canonical URL\n6. JSON-LD pra produto (structured data, rich results)",
+      "variaveis": []
+    },
+    {
+      "id": "og-image-generator",
+      "categoria": "seo",
+      "titulo": "OG image dinâmica (gera ao acessar)",
+      "descricao": "Cada página gera imagem de compartilhamento personalizada (com título, número, etc).",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero gerar OG images dinâmicas no Next.js (App Router) usando @vercel/og.\n\nExemplo: /og?titulo=Roadmap%20Dev gera imagem 1200x630 com texto.\n\nMe dá:\n1. /api/og/route.ts usando ImageResponse\n2. Layout JSX com Tailwind-like inline style\n3. Fonte customizada carregada\n4. Cache de imagens geradas (Vercel Edge cache)\n5. Como usar em metadata: openGraph: { images: [`/api/og?titulo=${...}`] }\n6. 3 templates (produto, aula, pagina geral)",
+      "variaveis": []
+    },
+    {
+      "id": "sitemap-dinamico",
+      "categoria": "seo",
+      "titulo": "Sitemap.xml dinâmico (Next.js)",
+      "descricao": "Sitemap gerado a cada request com URLs do banco.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero sitemap.xml dinâmico no Next.js que lista todas as URLs (estáticas + dinâmicas do banco).\n\nMe dá:\n1. /sitemap.ts usando MetadataRoute.Sitemap\n2. Pega URLs estáticas (/, /sobre, /contato)\n3. Pega URLs dinâmicas (produtos, aulas) do Supabase\n4. lastModified e priority por URL\n5. /robots.ts apontando pra /sitemap.xml\n6. Como submeter no Google Search Console",
+      "variaveis": []
+    },
+    {
+      "id": "schema-jsonld",
+      "categoria": "seo",
+      "titulo": "Schema.org JSON-LD (rich results no Google)",
+      "descricao": "Markup estruturado pra produto, FAQ, breadcrumb aparecerem com destaque no Google.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero JSON-LD structured data pra rich results no Google.\n\nTipos:\n- Product (preço, avaliações, disponibilidade)\n- FAQPage (perguntas/respostas)\n- BreadcrumbList\n- Course (pra meu curso)\n- Organization\n\nMe dá:\n1. Componente <JsonLd data={...} /> reutilizável\n2. Tipos TS pra cada schema\n3. Validação no Google Rich Results Test\n4. Exemplos completos pra cada tipo\n5. Onde colocar (no <head> via metadata ou direto na page)",
+      "variaveis": []
+    },
+    {
+      "id": "ga4-completo",
+      "categoria": "seo",
+      "titulo": "Google Analytics 4 (eventos custom)",
+      "descricao": "GA4 instalado com eventos relevantes (clique CTA, scroll, etc).",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero GA4 instalado no Next.js com eventos custom além dos automáticos.\n\nEventos custom:\n- click_cta_principal\n- click_cta_preco\n- scroll_50, scroll_75\n- pix_gerado\n- compra_aprovada\n\nMe dá:\n1. Componente <GA4 /> que carrega gtag\n2. Hook useGA4Event(nome, params) pra disparar\n3. Componente <ScrollTracker /> que dispara scroll_50/75 automaticamente\n4. Configuração em GA4 dashboard pra ver os eventos\n5. Cross-domain tracking se LP e checkout em domínios diferentes\n6. Conexão com GTM se já usa",
+      "variaveis": []
+    },
+    {
+      "id": "pixel-server-side",
+      "categoria": "seo",
+      "titulo": "Pixel Meta server-side (Conversions API)",
+      "descricao": "Eventos do server, não do browser, pra contornar adblocker.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero usar Conversions API do Meta pra disparar eventos server-side (mais confiável que pixel client).\n\nEventos críticos pra mandar via CAPI:\n- Purchase (no webhook de compra aprovada)\n- InitiateCheckout (no endpoint de criar pedido)\n\nMe dá:\n1. lib/meta-capi.ts com função enviarEvento(nome, params, user)\n2. Hash de email/telefone (CAPI exige PII hasheado)\n3. event_id pra deduplicação com pixel client\n4. Integração no webhook order_approved\n5. Como verificar no Events Manager se eventos chegando\n6. Quando usar CAPI vs pixel cliente vs ambos",
+      "variaveis": []
+    },
+    {
+      "id": "utm-tracker",
+      "categoria": "seo",
+      "titulo": "UTM tracker (atribui venda à fonte certa)",
+      "descricao": "Captura ?utm_source na primeira visita, persiste até a compra.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero capturar UTMs na primeira visita e atribuir compra à fonte correta.\n\nFluxo:\n1. Aluno chega com ?utm_source=fb&utm_campaign=roadmap_v3\n2. Sistema salva em cookie + localStorage (válido 30 dias)\n3. Quando compra, pega UTM e salva no pedido\n4. Painel admin mostra vendas por UTM\n\nMe dá:\n1. Hook useUtm() que captura na primeira visita\n2. Função getUltimaUtm() pra ler ao criar pedido\n3. Schema da tabela pedidos com colunas utm_*\n4. Painel /admin/atribuicao com gráfico por fonte\n5. Como tratar last-click vs first-click attribution",
+      "variaveis": []
+    },
+    {
+      "id": "link-encurtador",
+      "categoria": "seo",
+      "titulo": "Link encurtador próprio (com tracking)",
+      "descricao": "Cria links curtos tipo /go/abc, rastreia cliques, redireciona com UTM.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero encurtador de link próprio (substituir bit.ly).\n\nUso: links curtos pra divulgar em bio, WhatsApp, anúncios. Cada link rastreia cliques.\n\nFluxo:\n1. Admin cria link em /admin/links: destino, slug curto\n2. Acesso a /go/[slug] redireciona pra destino\n3. Salva clique (IP, user-agent, referer, timestamp)\n4. Painel mostra cliques por link\n\nMe dá:\n1. Schema links_curtos (slug, destino, criado_em, ativo)\n2. Schema cliques (link_id, ip, ua, referer, timestamp)\n3. Page /go/[slug]/route.ts (redirect 302)\n4. Painel admin\n5. Variáveis UTM injetadas automaticamente baseado no link",
+      "variaveis": []
+    },
+    {
+      "id": "comentarios-feedback",
+      "categoria": "comunidade",
+      "titulo": "Sistema de comentários/feedback (com moderação)",
+      "descricao": "Aluno deixa feedback geral ou em página específica, admin modera.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero sistema de comentários/feedback genérico no app.\n\nUso: aluno comenta em qualquer página (aula, prompt, etc) ou deixa feedback geral em /feedback.\n\nFeatures:\n- Comentário com markdown básico (negrito, link, lista)\n- Replies de 1 nível\n- Reactions (👍, 👎, ❤️)\n- Admin marca como \"resolvido\" ou \"em análise\"\n- Filtro: todos / não respondidos / resolvidos\n- Notificação no admin quando novo feedback (WhatsApp)\n\nMe dá:\n1. Schema (comentarios, replies, reactions)\n2. Componentes (<Comentario />, <FormComentario />, <ListaComentarios />)\n3. Endpoints CRUD\n4. Markdown parser seguro (sanitize)\n5. Real-time updates (Supabase channel)\n6. Painel admin /admin/feedback",
+      "variaveis": []
+    },
+    {
+      "id": "forum-simples",
+      "categoria": "comunidade",
+      "titulo": "Fórum simples por tópico",
+      "descricao": "Discord light, sem mensagens em tempo real, mais asynchronous.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero fórum simples na área de membros: alunos abrem tópicos, outros respondem.\n\nFeatures:\n- Categorias (\"Dúvidas\", \"Vitórias\", \"Off-topic\")\n- Tópicos com primeira mensagem\n- Respostas\n- Pin/lock por admin\n- Search por palavra-chave\n- Markdown nas mensagens\n- Upload de imagem inline\n\nMe dá:\n1. Schema (categorias, topicos, mensagens)\n2. Páginas: /forum, /forum/[categoria], /forum/[categoria]/[topico]\n3. Editor markdown com preview\n4. Real-time pra novas mensagens\n5. Email notification se alguém responde teu tópico\n6. Reputação básica (alunos que ajudam ganham badges)",
+      "variaveis": []
+    },
+    {
+      "id": "votacao-features",
+      "categoria": "comunidade",
+      "titulo": "Sistema de votação em features (roadmap público)",
+      "descricao": "Alunos votam em features que querem ver. Você prioriza.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero página /roadmap-publico onde alunos sugerem features e votam nas que querem.\n\nFluxo:\n1. Aluno em /roadmap-publico vê lista de features (votos, status)\n2. Pode propor nova feature (título + descrição)\n3. Pode votar +1 em features existentes (1 voto por feature por aluno)\n4. Admin marca status (proposto, em análise, fazendo, lançado)\n5. Aluno é notificado quando feature dele sai\n\nMe dá:\n1. Schema (features, votos)\n2. Endpoints + páginas\n3. Componente <CardFeature /> com botão de voto\n4. Filtro por status\n5. Notificação por email quando status muda",
+      "variaveis": []
+    },
+    {
+      "id": "notificacoes-inapp",
+      "categoria": "comunidade",
+      "titulo": "Notificações in-app (sininho com badge)",
+      "descricao": "Notifica aluno de novidades sem precisar de email.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero notificações in-app (sininho no header) pra:\n- Resposta no comentário/tópico\n- Aula nova publicada\n- Conquista desbloqueada\n- Mensagem do admin\n\nFeatures:\n- Badge com count de não-lidas\n- Dropdown com últimas 10\n- Click marca como lida\n- \"Ver todas\" abre página /notificacoes\n- Real-time (Supabase channel)\n\nMe dá:\n1. Schema notificacoes (user_id, tipo, payload, lida_em, criada_em)\n2. Componente <Sininho /> no header\n3. Hook useNotificacoes() com real-time\n4. Endpoint POST /api/notificar (interno)\n5. Trigger automático em eventos (resposta de comentário, aula publicada, etc)",
+      "variaveis": []
+    },
+    {
+      "id": "mensagens-privadas",
+      "categoria": "comunidade",
+      "titulo": "Mensagens privadas entre alunos (DM)",
+      "descricao": "Aluno manda mensagem direta pra outro, com inbox.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero DM entre alunos. Aluno A escreve pra B, B vê na inbox.\n\nFeatures:\n- Lista de conversas em /minha-conta/mensagens\n- Conversa = thread de mensagens\n- Indicador de \"lida\"\n- Real-time (mensagens novas aparecem sem refresh)\n- Bloqueio (aluno pode bloquear outro)\n- Reportar abuso (admin revisa)\n\nMe dá:\n1. Schema (conversas, mensagens, bloqueios)\n2. UI de inbox\n3. Real-time via Supabase channel\n4. RLS rigorosa (aluno só vê suas conversas)\n5. Endpoint POST /api/dm/enviar\n6. Limite anti-spam (10 mensagens/min/usuário)",
+      "variaveis": []
+    },
+    {
+      "id": "mentions-usuarios",
+      "categoria": "comunidade",
+      "titulo": "Mentions @usuario em comentários",
+      "descricao": "Digitar @ abre lista de alunos pra mencionar.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero suporte a @mentions em comentários e fórum.\n\nFeatures:\n- Digitar @ abre dropdown com lista de alunos (filtra conforme digita)\n- Selecionar insere @nomedouser no texto\n- Render parsea @nomedouser e linka pro perfil\n- Aluno mencionado recebe notificação in-app + email\n\nMe dá:\n1. Componente <EditorComMentions /> usando lib (Tiptap ou textcomplete)\n2. Endpoint /api/usuarios/buscar?q=lui pra autocomplete\n3. Parser que detecta @mentions ao salvar\n4. Trigger de notificação\n5. Renderizador que linka @nome no display",
+      "variaveis": []
+    },
+    {
+      "id": "reactions-emojis",
+      "categoria": "comunidade",
+      "titulo": "Reactions com emojis (Slack style)",
+      "descricao": "Aluno reage em comentário com emoji em vez de só responder.",
+      "etapasRelacionadas": [],
+      "conteudo": "Quero reactions com emoji estilo Slack/Discord em comentários e mensagens.\n\nFeatures:\n- Hover no comentário mostra botão \"+\" pra adicionar reaction\n- 6 emojis padrão (👍 ❤️ 😂 🎉 😢 🚀)\n- Picker pra mais\n- Mostra contador por emoji + lista de quem reagiu\n- Click no emoji existente toggle (adiciona/remove)\n\nMe dá:\n1. Schema reactions (id, comentario_id, user_id, emoji, criado_em)\n2. Componente <Reactions />\n3. Endpoint POST /api/reactions/toggle\n4. Real-time updates\n5. UI bonita com tooltip mostrando \"João, Ana e mais 3\"",
+      "variaveis": []
+    }
+  ]
+}

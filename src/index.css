@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== MODO FOCO (esconde sidebar+header pra estudar sem distração) ===== */
+body.modo-foco aside,
+body.modo-foco header {
+  display: none !important;
+}
+
+/* ===== PRINT (export PDF da Análise) ===== */
+@media print {
+  /* Esconde sidebar, header, watermark, controles */
+  aside,
+  header,
+  .no-print {
+    display: none !important;
+  }
+  /* Libera scroll */
+  html,
+  body,
+  #root,
+  main {
+    overflow: visible !important;
+    height: auto !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  /* Inverte cores pra impressão legível */
+  .glass,
+  .glass-strong {
+    background: #f9fafb !important;
+    border-color: #e5e7eb !important;
+    backdrop-filter: none !important;
+  }
+  .text-primary-white,
+  .text-primary-white\/80,
+  .text-primary-white\/70,
+  .text-primary-white\/60,
+  .text-primary-white\/50,
+  .text-primary-white\/40 {
+    color: #1f2937 !important;
+  }
+  .text-lime,
+  .text-lime\/80 {
+    color: #15803d !important;
+  }
+  .text-red-300,
+  .text-red-400,
+  .text-red-400\/80 {
+    color: #dc2626 !important;
+  }
+  .text-amber-400,
+  .text-amber-400\/80 {
+    color: #d97706 !important;
+  }
+  .border-white\/\[0\.06\],
+  .border-white\/\[0\.08\],
+  .border-lime\/20,
+  .border-lime\/30 {
+    border-color: #d1d5db !important;
+  }
+  /* Garante quebra de página razoável */
+  .print-section {
+    break-inside: avoid;
+  }
+}
+
+/* ===== BASE ===== */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #0c0c0c;
+  color: #ebebeb;
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.04em;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+/* ===== Custom utilities (não conflitam com Tailwind) ===== */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .lime-glow {
+    box-shadow: 0 0 20px rgba(204, 255, 0, 0.25);
+  }
+
+  .lime-glow-strong {
+    box-shadow: 0 0 40px rgba(204, 255, 0, 0.4);
+  }
+}
+
+/* ===== Scrollbar discreta ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(204, 255, 0, 0.3);
+}

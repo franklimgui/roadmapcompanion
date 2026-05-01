@@ -1,0 +1,208 @@
+{
+  "titulo": "Roadmap Dev de Oferta",
+  "descricao": "Da ideia ao produto rodando em produção. 18 aulas que te tiram do limbo de infoprodutor que só sabe vender e te transformam em dev de oferta de verdade.",
+  "fases": [
+    {
+      "id": "fase-1-setup",
+      "numero": "01",
+      "titulo": "Setup",
+      "subtitulo": "Antes de codar uma linha, você precisa do ambiente certo",
+      "etapas": [
+        {
+          "id": "intro",
+          "numero": "01",
+          "titulo": "Introdução",
+          "descricao": "Visão geral do roadmap: pra quem é, o que você vai aprender, como navegar pelas aulas, e por que Claude Code é o caminho mais curto pra parar de depender de no-code caro.",
+          "videoUrl": "https://www.youtube.com/watch?v=wo55MxogMuw",
+          "duracaoMin": 5,
+          "promptIds": []
+        },
+        {
+          "id": "ingles",
+          "numero": "02",
+          "titulo": "Inglês",
+          "descricao": "Você não precisa ser fluente, mas precisa saber ler erro e doc. Como destravar isso em 1 semana sem curso.",
+          "videoUrl": "https://www.youtube.com/watch?v=6O_dZ-2I7lA",
+          "duracaoMin": 4,
+          "promptIds": []
+        },
+        {
+          "id": "instalando-programas",
+          "numero": "03",
+          "titulo": "Instalando e configurando programas",
+          "descricao": "Tudo que precisa estar no seu computador antes da primeira linha de código: Claude Code, VS Code, Node, Git. Setup de 20-30 min que serve pra vida toda.",
+          "videoUrl": "https://www.youtube.com/watch?v=igvSnhERtc4",
+          "duracaoMin": 25,
+          "promptIds": ["setup-projeto-novo"]
+        },
+        {
+          "id": "sites-uteis",
+          "numero": "04",
+          "titulo": "Sites que vamos utilizar",
+          "descricao": "GitHub, Vercel, Supabase, Cloudflare, e os outros que viram a sua infra grátis (ou quase). O que cada um faz e quando usar qual.",
+          "videoUrl": "https://www.youtube.com/watch?v=SzwInN-bWS0",
+          "duracaoMin": 12,
+          "promptIds": []
+        },
+        {
+          "id": "iniciando-projeto",
+          "numero": "05",
+          "titulo": "Iniciando / importando um projeto",
+          "descricao": "Como começar do zero ou puxar um projeto que já existe. Estrutura mínima, primeiro commit, primeiro deploy.",
+          "videoUrl": "https://www.youtube.com/watch?v=Ert3fM_ZXIY",
+          "duracaoMin": 18,
+          "promptIds": ["setup-projeto-novo", "estrutura-pastas"]
+        }
+      ]
+    },
+    {
+      "id": "fase-2-fundacao",
+      "numero": "02",
+      "titulo": "Fundação técnica",
+      "subtitulo": "O básico que toda aplicação precisa pra não quebrar quando entrar usuário",
+      "etapas": [
+        {
+          "id": "repo-branch",
+          "numero": "06",
+          "titulo": "O que é repositório e branch e por que você tem que usar",
+          "descricao": "Git sem terror. Como salvar versões do seu código pra nunca perder trabalho, e por que branch evita que você quebre o que já tava funcionando.",
+          "videoUrl": "https://www.youtube.com/watch?v=4n77ztT3Hjc",
+          "duracaoMin": 15,
+          "promptIds": []
+        },
+        {
+          "id": "hospedagem",
+          "numero": "07",
+          "titulo": "Qual hospedagem usar",
+          "descricao": "Vercel, Cloudflare Pages, Railway. Diferença entre elas, quanto custa, qual escolher pra cada caso.",
+          "videoUrl": "https://www.youtube.com/watch?v=KVnIA26EONs",
+          "duracaoMin": 10,
+          "promptIds": ["deploy-vercel"]
+        },
+        {
+          "id": "dominios",
+          "numero": "08",
+          "titulo": "O melhor lugar para comprar domínios",
+          "descricao": "Registro.br vs Cloudflare vs outros. Onde economizar e onde isso vai te dar dor de cabeça depois.",
+          "videoUrl": "https://www.youtube.com/watch?v=ceO9wCOic9U",
+          "duracaoMin": 7,
+          "promptIds": []
+        },
+        {
+          "id": "manutencao",
+          "numero": "09",
+          "titulo": "Manutenção do projeto",
+          "descricao": "Como manter um projeto rodando sem precisar mexer toda semana. Logs, monitoramento básico, o que automatizar.",
+          "videoUrl": "https://www.youtube.com/watch?v=2UUM0T5Jflk",
+          "duracaoMin": 14,
+          "promptIds": ["debug-erro-prod"]
+        },
+        {
+          "id": "webhooks",
+          "numero": "10",
+          "titulo": "Tudo que você precisa saber sobre webhooks",
+          "descricao": "O que é, como funciona, por que sua aplicação trava sem isso. Webhook do Kiwify, Stripe, qualquer plataforma, o conceito é o mesmo.",
+          "videoUrl": "https://www.youtube.com/watch?v=36MwgzDtoy4",
+          "duracaoMin": 22,
+          "promptIds": ["webhook-kiwify", "webhook-validacao"]
+        }
+      ]
+    },
+    {
+      "id": "fase-3-construindo",
+      "numero": "03",
+      "titulo": "Construindo o produto",
+      "subtitulo": "Onde a maioria trava, e onde você passa a frente",
+      "etapas": [
+        {
+          "id": "api-pix",
+          "numero": "11",
+          "titulo": "Como fazer API PIX e quando você deve utilizar",
+          "descricao": "Implementação direta com Mercado Pago / Efí / Asaas. Quando vale a pena pular Kiwify e processar direto. Como economizar taxa de plataforma.",
+          "videoUrl": "https://www.youtube.com/watch?v=l6kQCOJ9ksc",
+          "duracaoMin": 30,
+          "promptIds": ["api-pix-mercadopago", "checkout-proprio"]
+        },
+        {
+          "id": "500-skills",
+          "numero": "12",
+          "titulo": "500 skills",
+          "descricao": "As 500 capacidades que você desbloqueia tendo o básico de programação + Claude Code. De recuperação de venda automática a player de vídeo próprio.",
+          "videoUrl": "https://www.youtube.com/watch?v=wTYpbMyvZo0",
+          "duracaoMin": 35,
+          "promptIds": []
+        },
+        {
+          "id": "masterizacao-frontend",
+          "numero": "13",
+          "titulo": "Masterização de frontend",
+          "descricao": "Como fazer a sua página de vendas e área de membros parecerem feitas por um designer caro, sem ser designer.",
+          "videoUrl": "https://www.youtube.com/watch?v=PrS_jhRYjw0",
+          "duracaoMin": 28,
+          "promptIds": ["lp-conversao", "componentes-bonitos"]
+        },
+        {
+          "id": "post-criativo",
+          "numero": "14",
+          "titulo": "Post / carrossel / criativo com Claude Code",
+          "descricao": "Sim, dá pra fazer criativo de tráfego com Claude Code. Como gerar variações em escala mantendo identidade visual.",
+          "videoUrl": "https://youtu.be/AcJvQWgJO-0",
+          "duracaoMin": 18,
+          "promptIds": []
+        }
+      ]
+    },
+    {
+      "id": "fase-4-bonus",
+      "numero": "04",
+      "titulo": "Bônus",
+      "subtitulo": "Disponíveis após 7 dias do início. Material avançado.",
+      "etapas": [
+        {
+          "id": "bonus-clonar-oferta",
+          "numero": "15",
+          "titulo": "A MELHOR maneira de clonar e modelar uma oferta (ouro)",
+          "descricao": "Como pegar uma oferta vencedora e adaptar pro seu nicho sem copiar errado. O método que uso pra clonar com personalidade.",
+          "videoUrl": "https://www.youtube.com/watch?v=eaccEaztAiA",
+          "duracaoMin": 25,
+          "bloqueado": true,
+          "desbloqueiaAposDias": 7,
+          "promptIds": ["clonar-oferta"]
+        },
+        {
+          "id": "bonus-10-porcento",
+          "numero": "16",
+          "titulo": "Como pagar somente 10% do valor das assinaturas: Claude Code, ChatGPT, Lovable",
+          "descricao": "Truques de uso eficiente que reduzem seu gasto em IA em 90%. Não é gambiarra, é arquitetura inteligente.",
+          "videoUrl": "https://www.youtube.com/watch?v=j-qloSIr8r8",
+          "duracaoMin": 15,
+          "bloqueado": true,
+          "desbloqueiaAposDias": 7,
+          "promptIds": []
+        },
+        {
+          "id": "bonus-player-proprio",
+          "numero": "17",
+          "titulo": "Como criar seu player de vídeo próprio",
+          "descricao": "Player tipo VTurb feito do zero. Eventos pro pixel, controle de play, barra de progresso só depois de X segundos. Sem pagar mensalidade.",
+          "videoUrl": "https://www.youtube.com/watch?v=kDIYcLFFhIU",
+          "duracaoMin": 32,
+          "bloqueado": true,
+          "desbloqueiaAposDias": 7,
+          "promptIds": ["player-vsl-customizado"]
+        },
+        {
+          "id": "bonus-prompt-lp",
+          "numero": "18",
+          "titulo": "Prompt para dar acabamento na LP e aumentar muito a conversão",
+          "descricao": "O prompt-mestre que pega uma LP feia e devolve uma LP que converte. Use depois de ter a estrutura pronta.",
+          "videoUrl": "https://www.youtube.com/watch?v=K-Z3J7zX9jc",
+          "duracaoMin": 12,
+          "bloqueado": true,
+          "desbloqueiaAposDias": 7,
+          "promptIds": ["lp-acabamento"]
+        }
+      ]
+    }
+  ]
+}
