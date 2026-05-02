@@ -186,7 +186,11 @@ export type UpdateStatus =
   | { tipo: "downloading"; progresso: number }
   | { tipo: "downloaded"; versao: string }
   | { tipo: "up-to-date" }
-  | { tipo: "error"; mensagem: string };
+  | { tipo: "error"; mensagem: string }
+  // Mac não-assinado não tem auto-update silencioso (Apple bloqueia sem
+  // Developer ID). Em vez, fazemos polling do GitHub Releases e mostramos
+  // banner "baixar versão nova" que abre a página de download.
+  | { tipo: "mac-update-disponivel"; versao: string; urlPagina: string };
 
 // ===== Auth (Companion) =====
 // Sessão local persistida, só guarda dado após validação online bem-sucedida

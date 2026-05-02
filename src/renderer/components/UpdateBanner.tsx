@@ -48,6 +48,30 @@ export function UpdateBanner() {
     );
   }
 
+  if (status.tipo === "mac-update-disponivel") {
+    return (
+      <div className="no-print w-full bg-lime/10 border-b border-lime/30 px-6 py-2">
+        <div className="flex items-center justify-between gap-4 text-sm flex-wrap">
+          <div className="flex items-center gap-3">
+            <div
+              className="size-1.5 rounded-full bg-lime animate-pulse-dot"
+              style={{ flexShrink: 0 }}
+            />
+            <span className="text-lime/90">
+              Nova versão ({status.versao}) disponível pra Mac.
+            </span>
+          </div>
+          <button
+            onClick={() => window.api.abrirLink(status.urlPagina)}
+            className="px-3 py-1 rounded-md bg-lime text-obsidian text-xs font-medium tracking-tight hover:lime-glow transition-all"
+          >
+            Baixar nova versão
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (status.tipo === "downloaded") {
     return (
       <div className="no-print w-full bg-lime/10 border-b border-lime/30 px-6 py-2">
