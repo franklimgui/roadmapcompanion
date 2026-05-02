@@ -296,6 +296,7 @@ export interface ElectronAPI {
   // Sistema
   abrirLink: (url: string) => Promise<void>;
   copiarTexto: (texto: string) => Promise<void>;
+  getVersion: () => Promise<string>;
 }
 
 declare global {

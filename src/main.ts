@@ -182,4 +182,5 @@ function registerIpcHandlers() {
   ipcMain.handle("sistema:copiar", (_, texto: string) => {
     clipboard.writeText(texto);
   });
+  ipcMain.handle("sistema:getVersion", () => app.getVersion());
 }

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const items = [
@@ -15,6 +16,12 @@ interface Props {
 }
 
 export function Sidebar({ onLogout, email }: Props) {
+  const [versao, setVersao] = useState<string>("");
+
+  useEffect(() => {
+    window.api.getVersion().then(setVersao).catch(() => setVersao(""));
+  }, []);
+
   return (
     <aside className="w-60 shrink-0 border-r border-white/[0.06] bg-obsidian-soft flex flex-col">
       {/* Logo */}
@@ -88,7 +95,7 @@ export function Sidebar({ onLogout, email }: Props) {
             className="text-[0.65rem] tracking-[0.12em] uppercase text-primary-white/30"
             style={{ fontFamily: "JetBrains Mono, monospace" }}
           >
-            v0.1.0 · MVP
+            {versao ? `v${versao}` : ""}
           </div>
         </div>
       </div>

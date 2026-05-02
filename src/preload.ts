@@ -73,6 +73,7 @@ const api: ElectronAPI = {
   // Sistema
   abrirLink: (url: string) => ipcRenderer.invoke("sistema:abrirLink", url),
   copiarTexto: (texto: string) => ipcRenderer.invoke("sistema:copiar", texto),
+  getVersion: () => ipcRenderer.invoke("sistema:getVersion"),
 };
 
 contextBridge.exposeInMainWorld("api", api);
