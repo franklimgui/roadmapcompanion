@@ -1,7 +1,7 @@
 {
   "name": "roadmap-companion",
   "productName": "Roadmap Companion",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Companion app do Roadmap Dev de Oferta. Execute, anote e desbloqueie marcos da sua jornada de Claude Code.",
   "repository": {
     "type": "git",
