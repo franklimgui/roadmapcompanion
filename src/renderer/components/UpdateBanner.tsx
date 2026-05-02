@@ -74,20 +74,14 @@ export function UpdateBanner() {
     );
   }
 
+  // Erros de verificação de update são silenciosos pro aluno (servidor fora,
+  // sem asset pra plataforma, etc). Aluno não pode fazer nada com isso, então
+  // não mostramos banner vermelho assustador. Logamos pro Console pra debug.
   if (status.tipo === "error") {
-    return (
-      <div className="no-print w-full bg-red-500/10 border-b border-red-500/30 px-6 py-2">
-        <div className="flex items-center gap-3 text-sm">
-          <div
-            className="size-1.5 rounded-full bg-red-500"
-            style={{ flexShrink: 0 }}
-          />
-          <span className="text-red-300/90">
-            Falha ao verificar atualizações. {status.mensagem}
-          </span>
-        </div>
-      </div>
-    );
+    if (typeof console !== "undefined") {
+      console.warn("[update] verificação falhou:", status.mensagem);
+    }
+    return null;
   }
 
   return null;
