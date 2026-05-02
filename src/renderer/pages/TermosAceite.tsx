@@ -59,7 +59,7 @@ export function TermosAceite({ perfil, onAceito }: Props) {
     : null;
 
   return (
-    <div className="min-h-screen w-full bg-obsidian relative overflow-y-auto">
+    <div className="h-screen w-full bg-obsidian relative overflow-y-auto">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full blur-[120px] opacity-15 pointer-events-none"
         style={{ background: "radial-gradient(circle, #ccff00 0%, transparent 70%)" }}

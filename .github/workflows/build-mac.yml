@@ -1,0 +1,31 @@
+name: Build Mac on tag push
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build and publish Mac (arm64 + x64)
+        run: |
+          npm run publish -- --platform=darwin --arch=arm64
+          npm run publish -- --platform=darwin --arch=x64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

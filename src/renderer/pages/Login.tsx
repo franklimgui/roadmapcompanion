@@ -41,7 +41,7 @@ export function Login({ onLogin, motivoInicial, emailPreenchido }: Props) {
   }
 
   return (
-    <div className="min-h-screen w-full bg-obsidian relative overflow-y-auto flex items-center justify-center">
+    <div className="h-screen w-full bg-obsidian relative overflow-y-auto flex items-center justify-center">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full blur-[120px] opacity-15 pointer-events-none"
         style={{
