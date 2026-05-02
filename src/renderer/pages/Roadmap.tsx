@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import roadmapData from "../data/roadmap.json";
 import promptsData from "../data/prompts.json";
-import type { Progresso } from "../../lib/types";
+import type { Progresso, Sessao } from "../../lib/types";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { NotaAulaEditor } from "../components/NotaAulaEditor";
 import { verificarDesbloqueios } from "../hooks/useConquistas";
@@ -27,8 +27,33 @@ interface Fase {
   etapas: Etapa[];
 }
 
+/**
+ * Calcula quantos dias se passaram desde a data da compra.
+ * validadoEm vem da Sessao, é o criado_em do registro app_usuarios no n8n
+ * (data real da compra, fonte de verdade do servidor).
+ */
+function diasDesdeCompra(validadoEm: string | undefined): number {
+  if (!validadoEm) return 0;
+  const inicio = new Date(validadoEm).getTime();
+  const agora = Date.now();
+  if (isNaN(inicio)) return 0;
+  return Math.floor((agora - inicio) / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * Retorna quantos dias faltam pra etapa desbloquear, ou 0 se já tá liberada.
+ * Etapas sem `bloqueado` retornam 0.
+ * Default de dias quando bloqueado=true mas desbloqueiaAposDias não setado: 7.
+ */
+function diasRestantes(etapa: Etapa, dias: number): number {
+  if (!etapa.bloqueado) return 0;
+  const limite = etapa.desbloqueiaAposDias ?? 7;
+  return Math.max(0, limite - dias);
+}
+
 export function Roadmap() {
   const [progresso, setProgresso] = useState<Progresso | null>(null);
+  const [sessao, setSessao] = useState<Sessao | null>(null);
   const [etapaAberta, setEtapaAberta] = useState<Etapa | null>(null);
   const [faseExpandida, setFaseExpandida] = useState<string | null>(
     "fase-1-setup"
@@ -37,7 +62,13 @@ export function Roadmap() {
 
   useEffect(() => {
     window.api.getProgresso().then(setProgresso);
+    window.api.getSessao().then(setSessao);
   }, []);
+
+  const diasComConta = useMemo(
+    () => diasDesdeCompra(sessao?.validadoEm),
+    [sessao]
+  );
 
   const fases = roadmapData.fases as Fase[];
 
@@ -136,26 +167,49 @@ export function Roadmap() {
                 <div className="border-t border-white/[0.06] divide-y divide-white/[0.04]">
                   {fase.etapas.map((etapa) => {
                     const completa = isEtapaCompleta(etapa.id);
+                    const restantes = diasRestantes(etapa, diasComConta);
+                    const bloqueada = restantes > 0;
                     return (
                       <div
                         key={etapa.id}
-                        className="flex items-center gap-4 px-6 py-4 hover:bg-white/[0.02] transition-colors group"
+                        className={`flex items-center gap-4 px-6 py-4 transition-colors group ${
+                          bloqueada
+                            ? "opacity-50"
+                            : "hover:bg-white/[0.02]"
+                        }`}
                       >
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (bloqueada) {
+                              toast.show({
+                                type: "info",
+                                title:
+                                  restantes === 1
+                                    ? "Libera amanhã"
+                                    : `Libera em ${restantes} dias`,
+                                icon: "🔒",
+                              });
+                              return;
+                            }
                             toggleEtapa(etapa.id);
                           }}
+                          disabled={bloqueada}
                           className={`shrink-0 size-6 rounded-md border-2 flex items-center justify-center transition-all ${
-                            completa
+                            bloqueada
+                              ? "border-white/10 cursor-not-allowed"
+                              : completa
                               ? "bg-lime border-lime"
                               : "border-white/20 hover:border-lime/60"
                           }`}
                         >
-                          {completa && (
+                          {completa && !bloqueada && (
                             <span className="text-obsidian text-xs font-bold">
                               ✓
                             </span>
+                          )}
+                          {bloqueada && (
+                            <span className="text-xs">🔒</span>
                           )}
                         </button>
 
@@ -166,7 +220,20 @@ export function Roadmap() {
                         </div>
 
                         <button
-                          onClick={() => setEtapaAberta(etapa)}
+                          onClick={() => {
+                            if (bloqueada) {
+                              toast.show({
+                                type: "info",
+                                title:
+                                  restantes === 1
+                                    ? "Libera amanhã"
+                                    : `Libera em ${restantes} dias`,
+                                icon: "🔒",
+                              });
+                              return;
+                            }
+                            setEtapaAberta(etapa);
+                          }}
                           className="flex-1 text-left min-w-0"
                         >
                           <div
@@ -181,16 +248,38 @@ export function Roadmap() {
                           {etapa.duracaoMin && (
                             <div className="text-xs text-primary-white/40 mt-0.5">
                               {etapa.duracaoMin} min
-                              {etapa.bloqueado && " · 🔒 7 dias"}
+                              {bloqueada &&
+                                ` · 🔒 ${
+                                  restantes === 1
+                                    ? "libera amanhã"
+                                    : `libera em ${restantes} dias`
+                                }`}
                             </div>
                           )}
                         </button>
 
                         <button
-                          onClick={() => setEtapaAberta(etapa)}
-                          className="text-xs text-primary-white/40 group-hover:text-lime transition-colors shrink-0"
+                          onClick={() => {
+                            if (bloqueada) {
+                              toast.show({
+                                type: "info",
+                                title:
+                                  restantes === 1
+                                    ? "Libera amanhã"
+                                    : `Libera em ${restantes} dias`,
+                                icon: "🔒",
+                              });
+                              return;
+                            }
+                            setEtapaAberta(etapa);
+                          }}
+                          className={`text-xs shrink-0 transition-colors ${
+                            bloqueada
+                              ? "text-primary-white/30"
+                              : "text-primary-white/40 group-hover:text-lime"
+                          }`}
                         >
-                          Abrir →
+                          {bloqueada ? "Bloqueada" : "Abrir →"}
                         </button>
                       </div>
                     );

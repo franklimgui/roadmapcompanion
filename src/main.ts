@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, shell, clipboard } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
+import { iniciarServidorRenderer, pararServidorRenderer } from "./main/rendererServer";
 import * as storage from "./main/storage";
 import { getContextoDispositivo, getDeviceId } from "./main/contexto";
 import { validarAuth, notificarReembolsoEncerrado } from "./main/auth";
@@ -20,6 +21,15 @@ import type { Sessao } from "./lib/types";
 if (started) {
   app.quit();
 }
+
+/**
+ * Por que servidor HTTP local: o YouTube IFrame Player API rejeita iframes
+ * embutidos em páginas com origin file:// ou esquemas customizados (app://)
+ * com Erro 153. A origin precisa ser HTTP(S) real. Subimos um servidor em
+ * 127.0.0.1:porta-aleatória pra servir o bundle do renderer; o YouTube aceita
+ * essa origin. Mesma técnica que players de cursos online usam.
+ */
+let urlRendererProd: string | null = null;
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -54,16 +64,28 @@ const createWindow = () => {
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
-    );
+  } else if (urlRendererProd) {
+    mainWindow.loadURL(urlRendererProd);
   }
 };
 
-app.on("ready", () => {
+app.on("ready", async () => {
+  // Em prod, sobe o servidor HTTP local antes de abrir a janela.
+  if (!MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    const baseDir = path.join(
+      __dirname,
+      `../renderer/${MAIN_WINDOW_VITE_NAME}`
+    );
+    const info = await iniciarServidorRenderer(baseDir);
+    urlRendererProd = info.url;
+  }
+
   registerIpcHandlers();
   createWindow();
+});
+
+app.on("before-quit", () => {
+  pararServidorRenderer();
 });
 
 app.on("window-all-closed", () => {
