@@ -13,6 +13,7 @@ interface Etapa {
   titulo: string;
   descricao: string;
   videoUrl?: string;
+  materialUrl?: string;
   duracaoMin?: number;
   promptIds?: string[];
   bloqueado?: boolean;
@@ -394,8 +395,12 @@ function EtapaModal({
             </div>
           </div>
 
-          {/* Vídeo */}
-          <VideoPlayer url={etapa.videoUrl || ""} titulo={etapa.titulo} />
+          {/* Vídeo ou Material */}
+          {etapa.materialUrl && !etapa.videoUrl ? (
+            <MaterialLink url={etapa.materialUrl} titulo={etapa.titulo} />
+          ) : (
+            <VideoPlayer url={etapa.videoUrl || ""} titulo={etapa.titulo} />
+          )}
 
           {/* Descrição */}
           <p className="text-primary-white/70 leading-relaxed">
@@ -445,16 +450,62 @@ function EtapaModal({
             >
               {completa ? "↶ Desmarcar" : "✓ Marcar como feito"}
             </button>
-            {etapa.videoUrl && (
+            {etapa.videoUrl ? (
               <button
                 onClick={() => window.api.abrirLink(etapa.videoUrl!)}
                 className="text-sm text-primary-white/50 hover:text-lime transition-colors"
               >
                 Abrir vídeo no navegador ↗
               </button>
-            )}
+            ) : etapa.materialUrl ? (
+              <button
+                onClick={() => window.api.abrirLink(etapa.materialUrl!)}
+                className="text-sm text-primary-white/50 hover:text-lime transition-colors"
+              >
+                Abrir material no navegador ↗
+              </button>
+            ) : null}
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function MaterialLink({ url, titulo }: { url: string; titulo: string }) {
+  return (
+    <div className="space-y-2">
+      <div className="aspect-video glass-strong rounded-xl flex items-center justify-center p-8">
+        <div className="text-center max-w-md">
+          <div className="text-4xl mb-4">📄</div>
+          <div className="text-[0.65rem] tracking-[0.16em] uppercase text-lime/80 font-mono mb-2">
+            Material externo
+          </div>
+          <h3 className="text-xl font-semibold tracking-tight mb-3">
+            {titulo}
+          </h3>
+          <p className="text-sm text-primary-white/60 mb-5">
+            Conteúdo hospedado no Notion. Clica embaixo pra abrir no navegador
+            e salva nos favoritos pra acessar quando precisar.
+          </p>
+          <button
+            onClick={() => window.api.abrirLink(url)}
+            className="px-5 py-2.5 rounded-lg bg-lime text-obsidian font-medium hover:lime-glow transition-all"
+          >
+            Abrir no Notion →
+          </button>
+        </div>
+      </div>
+      <div className="flex items-center justify-between text-xs">
+        <div className="text-primary-white/30 font-mono truncate pr-3">
+          {url}
+        </div>
+        <button
+          onClick={() => window.api.copiarTexto(url)}
+          className="text-primary-white/50 hover:text-lime transition-colors px-3 py-1.5 rounded-md border border-white/[0.06] hover:border-lime/30 shrink-0"
+        >
+          Copiar link
+        </button>
       </div>
     </div>
   );

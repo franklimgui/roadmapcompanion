@@ -201,6 +201,16 @@
           "bloqueado": true,
           "desbloqueiaAposDias": 7,
           "promptIds": ["lp-acabamento"]
+        },
+        {
+          "id": "bonus-claude-scriptwriting",
+          "numero": "19",
+          "titulo": "Claude Scriptwriting Stack pra Anúncio que Escala",
+          "descricao": "10 prompts que eu uso pra escrever VSL, criativo e headline. Hook engineering, two actor, autoridade, long-form story e iterador. Tem o anti-ai-script.md junto, regras pra remover os sinais de que foi a IA que escreveu, porque o Meta tá detectando e penalizando. Material em texto no Notion, pra você abrir, copiar prompt e colar direto no Claude.",
+          "materialUrl": "https://large-amber-34e.notion.site/Claude-Scriptwriting-Stack-pra-Anuncio-que-Escala-7d7a3662d4618373aeca010ed7dceaf6?source=copy_link",
+          "bloqueado": true,
+          "desbloqueiaAposDias": 7,
+          "promptIds": []
         }
       ]
     }

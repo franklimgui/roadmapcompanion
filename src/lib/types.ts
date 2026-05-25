@@ -225,8 +225,11 @@ export interface Etapa {
   titulo: string;
   descricao: string;
   videoUrl?: string;
+  materialUrl?: string;
   promptIds?: string[];
   duracaoMin?: number;
+  bloqueado?: boolean;
+  desbloqueiaAposDias?: number;
 }
 
 export interface Fase {
