@@ -10,6 +10,8 @@ const items = [
   { to: "/conquistas", label: "Conquistas", icon: "★" },
 ];
 
+const itemDestaque = { to: "/proximo-passo", label: "Próximo Passo", icon: "➤" };
+
 interface Props {
   onLogout: () => void;
   email?: string;
@@ -38,7 +40,7 @@ export function Sidebar({ onLogout, email }: Props) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 flex flex-col">
         {items.map((item) => (
           <NavLink
             key={item.to}
@@ -61,6 +63,28 @@ export function Sidebar({ onLogout, email }: Props) {
             <span>{item.label}</span>
           </NavLink>
         ))}
+
+        {/* Item destaque: separador acima + estilo lime sempre, indicando que é especial */}
+        <div className="pt-3 mt-3 border-t border-white/[0.06]">
+          <NavLink
+            to={itemDestaque.to}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
+                isActive
+                  ? "bg-lime/15 text-lime border border-lime/30"
+                  : "text-lime/80 hover:bg-lime/5 hover:text-lime border border-lime/10 hover:border-lime/20"
+              }`
+            }
+          >
+            <span
+              className="text-base font-medium"
+              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            >
+              {itemDestaque.icon}
+            </span>
+            <span>{itemDestaque.label}</span>
+          </NavLink>
+        </div>
       </nav>
 
       {/* Footer da sidebar */}

@@ -14,6 +14,7 @@ import { Prompts } from "./pages/Prompts";
 import { Analise } from "./pages/Analise";
 import { Journal } from "./pages/Journal";
 import { Achievements } from "./pages/Achievements";
+import { ProximoPasso } from "./pages/ProximoPasso";
 import { Layout } from "./components/Layout";
 import { ToastProvider } from "./components/Toast";
 
@@ -190,6 +191,7 @@ function AppRoutes() {
         <Route path="/analise" element={<Analise />} />
         <Route path="/diario" element={<Journal />} />
         <Route path="/conquistas" element={<Achievements />} />
+        <Route path="/proximo-passo" element={<ProximoPasso />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
