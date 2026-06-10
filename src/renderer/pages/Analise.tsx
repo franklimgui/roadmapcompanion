@@ -4,6 +4,8 @@ import { AnaliseLPTab } from "./analise/AnaliseLPTab";
 import { AnaliseComparativoTab } from "./analise/AnaliseComparativoTab";
 import { AnaliseNamingTab } from "./analise/AnaliseNamingTab";
 import { AnaliseOfertaTab } from "./analise/AnaliseOfertaTab";
+import { GateBanner } from "./analise/shared";
+import { useAnaliseGate } from "../hooks/useAnaliseGate";
 
 const TABS: Array<{ id: TipoAnalise; label: string }> = [
   { id: "lp", label: "Landing Page" },
@@ -14,6 +16,7 @@ const TABS: Array<{ id: TipoAnalise; label: string }> = [
 
 export function Analise() {
   const [tab, setTab] = useState<TipoAnalise>("lp");
+  const gate = useAnaliseGate();
 
   return (
     <div className="space-y-6 pb-12">
@@ -31,6 +34,13 @@ export function Analise() {
           concretos e o que mudar primeiro pra aumentar conversão.
         </p>
       </div>
+
+      {!gate.carregando && !gate.liberado && (
+        <GateBanner
+          diasRestantes={gate.diasRestantes}
+          dataLiberacao={gate.dataLiberacao}
+        />
+      )}
 
       {/* Tabs */}
       <div className="border-b border-white/[0.06] no-print">

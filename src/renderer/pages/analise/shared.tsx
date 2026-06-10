@@ -257,6 +257,61 @@ export function botaoExportarPDF() {
   );
 }
 
+export function GateBanner({
+  diasRestantes,
+  dataLiberacao,
+}: {
+  diasRestantes: number;
+  dataLiberacao: Date | null;
+}) {
+  const dataStr = dataLiberacao?.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+  });
+  return (
+    <div className="rounded-2xl border border-amber-400/30 bg-amber-400/[0.05] p-5 flex items-start gap-4 no-print animate-fade-up">
+      <div className="size-10 rounded-lg bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base font-mono shrink-0">
+        ⏳
+      </div>
+      <div className="flex-1">
+        <div className="font-semibold text-amber-400 mb-1">
+          Análise libera em {diasRestantes}{" "}
+          {diasRestantes === 1 ? "dia" : "dias"}
+          {dataStr ? ` · ${dataStr}` : ""}
+        </div>
+        <p className="text-sm text-primary-white/70 leading-relaxed">
+          A análise consultiva com IA fica disponível 7 dias depois do seu
+          primeiro acesso ao Companion. Aproveita esse tempo pra avançar nas
+          aulas — quando liberar você já chega com produto rodando pra
+          analisar.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function GateFooterBloqueado({
+  diasRestantes,
+  dataLiberacao,
+}: {
+  diasRestantes: number;
+  dataLiberacao: Date | null;
+}) {
+  const dataStr = dataLiberacao?.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "short",
+  });
+  return (
+    <div
+      className="text-xs text-amber-300/80"
+      style={{ fontFamily: "JetBrains Mono, monospace" }}
+    >
+      Disponível em {diasRestantes} {diasRestantes === 1 ? "dia" : "dias"}
+      {dataStr ? ` · ${dataStr}` : ""}
+    </div>
+  );
+}
+
 export function ImpactoBadge({
   impacto,
 }: {

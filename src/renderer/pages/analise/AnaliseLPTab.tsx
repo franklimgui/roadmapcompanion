@@ -9,10 +9,13 @@ import {
   AnaliseLoadingState,
   EstadoVazio,
   botaoExportarPDF,
+  GateFooterBloqueado,
 } from "./shared";
+import { useAnaliseGate } from "../../hooks/useAnaliseGate";
 
 export function AnaliseLPTab() {
   const toast = useToast();
+  const gate = useAnaliseGate();
   const [url, setUrl] = useState("");
   const [analisando, setAnalisando] = useState(false);
   const [resultado, setResultado] = useState<AnaliseLP | null>(null);
@@ -28,6 +31,7 @@ export function AnaliseLPTab() {
 
   async function analisar() {
     setErro(null);
+    if (!gate.liberado) return;
     if (!url.trim()) return;
 
     let normalizedUrl = url.trim();
@@ -108,19 +112,28 @@ export function AnaliseLPTab() {
         </label>
 
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/[0.06]">
-          <div
-            className="text-xs text-primary-white/40"
-            style={{ fontFamily: "JetBrains Mono, monospace" }}
-          >
-            {restantes !== null
-              ? `${restantes} análise${restantes === 1 ? "" : "s"} restante${
-                  restantes === 1 ? "" : "s"
-                } hoje`
-              : "Limite: 5 análises por dia"}
-          </div>
+          {gate.liberado ? (
+            <div
+              className="text-xs text-primary-white/40"
+              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            >
+              {restantes !== null
+                ? `${restantes} análise${restantes === 1 ? "" : "s"} restante${
+                    restantes === 1 ? "" : "s"
+                  } hoje`
+                : "Limite: 5 análises por dia"}
+            </div>
+          ) : (
+            <GateFooterBloqueado
+              diasRestantes={gate.diasRestantes}
+              dataLiberacao={gate.dataLiberacao}
+            />
+          )}
           <button
             onClick={analisar}
-            disabled={analisando || !url.trim() || restantes === 0}
+            disabled={
+              analisando || !url.trim() || restantes === 0 || !gate.liberado
+            }
             className="px-6 py-2.5 rounded-lg bg-lime text-obsidian font-medium tracking-tight disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:lime-glow transition-all"
           >
             {analisando ? "Analisando..." : "Analisar →"}

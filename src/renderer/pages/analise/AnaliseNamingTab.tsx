@@ -8,10 +8,13 @@ import {
   AnaliseLoadingState,
   EstadoVazio,
   botaoExportarPDF,
+  GateFooterBloqueado,
 } from "./shared";
+import { useAnaliseGate } from "../../hooks/useAnaliseGate";
 
 export function AnaliseNamingTab() {
   const toast = useToast();
+  const gate = useAnaliseGate();
   const [nome, setNome] = useState("");
   const [contexto, setContexto] = useState("");
   const [analisando, setAnalisando] = useState(false);
@@ -28,6 +31,7 @@ export function AnaliseNamingTab() {
 
   async function analisar() {
     setErro(null);
+    if (!gate.liberado) return;
     if (!nome.trim() || nome.trim().length < 2) {
       setErro("Digita um nome com pelo menos 2 caracteres.");
       return;
@@ -127,19 +131,28 @@ export function AnaliseNamingTab() {
         </label>
 
         <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
-          <div
-            className="text-xs text-primary-white/40"
-            style={{ fontFamily: "JetBrains Mono, monospace" }}
-          >
-            {restantes !== null
-              ? `${restantes} análise${restantes === 1 ? "" : "s"} restante${
-                  restantes === 1 ? "" : "s"
-                } hoje`
-              : "Limite: 5 análises por dia"}
-          </div>
+          {gate.liberado ? (
+            <div
+              className="text-xs text-primary-white/40"
+              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            >
+              {restantes !== null
+                ? `${restantes} análise${restantes === 1 ? "" : "s"} restante${
+                    restantes === 1 ? "" : "s"
+                  } hoje`
+                : "Limite: 5 análises por dia"}
+            </div>
+          ) : (
+            <GateFooterBloqueado
+              diasRestantes={gate.diasRestantes}
+              dataLiberacao={gate.dataLiberacao}
+            />
+          )}
           <button
             onClick={analisar}
-            disabled={analisando || !nome.trim() || restantes === 0}
+            disabled={
+              analisando || !nome.trim() || restantes === 0 || !gate.liberado
+            }
             className="px-6 py-2.5 rounded-lg bg-lime text-obsidian font-medium tracking-tight disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:lime-glow transition-all"
           >
             {analisando ? "Avaliando..." : "Avaliar nome →"}
